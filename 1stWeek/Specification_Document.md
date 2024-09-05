@@ -21,6 +21,8 @@ The knn algorithm therefore takes as input images that will have to be transform
 # Desired time complexity
 
 In terms of complexity time, for data storage the complexity time is O(1) because there is no calculation to be done, but for the prediction complexity time we have O(n*d) where n is the number of examples in the dataset and d is the size of each of the elements. If we use the MNIST dataset made up of 60,000 images that we will convert into 28*28 pixels, then O(60000*784).
+In terms of space complexity, the only thing we need to take into account is the data set, which in this case is 60,000, so we'll also have a complexity of O(nxd), which we can calculate if we keep a single byte for each pixel: 
+60000×784=47040000 octets ≈ 47 Mo.
 
 The k-nn algorithm is not particularly fast in itself, as we can see from the following completion time
 
