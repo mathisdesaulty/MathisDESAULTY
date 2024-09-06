@@ -6,13 +6,13 @@ For this project, I plan to use the Python programming language. It's one of the
 
 # The implemented data structures and algorithms
 
-The datastructures I plan to use for this project are arraylists for storing Images, distances and labels. For pixel manipulation, I plan to use numpy arrays to create matrices that will represent the images. To finish off with the datastructures, I think it would be interesting to use dictionaries to link images with their labels, i.e. their numbers.
+The data structures I plan to use for this project are arrays to store images, distances and labels. For pixel manipulation, I plan to use numpy arrays to create matrices to represent the images. To finish with the data structures, I think it would be interesting to use dictionaries to link the images with their labels, i.e. their numbers.
 
-As far as the algorithm used is concerned, I'm going to use grey-scale image conversion first and then k-nearest neighbours. As for the distance formula used, I think this needs to be tested to find out which would be the best. 
+As far as the algorithm used is concerned, I'm going to start by converting the images to greyscale and then use the k-nearest neighbours. As for the distance formula used, I think we need to test it to see which is the best, in particular the Hausdorff Distance and the D23 measure.
 
 # Problem solved
 
-The problem solved by this project is the recognition of handwritten numbers using the k-nn agorithm. This recognition is broken down into several different problems, transforming the images into vectors so that they can be compared with each other, then comparing the different images and choosing the distance.
+The problem solved by this project is the recognition of handwritten digits using the k-nn algorithm. This recognition breaks down into several different problems: transforming the images into a black and white matrix so that they can be compared with each other, then comparing the different images and choosing the distance.
 
 # Input used by the program and its use
 
