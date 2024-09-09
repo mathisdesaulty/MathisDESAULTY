@@ -2,7 +2,7 @@
 
 ## Introduction
 
-For the first week, I didn't want to start coding straight away. In fact, I preferred to devote this week to finding a project and understanding how to set it up. So during this week I was able to do the following steps.
+Having spent 6 hours on the project this first week, I didn't want to start coding straight away. In fact, I preferred to devote this week to finding a project and understanding how to set it up. So during this week I was able to do the following steps.
 
 ## Finding the project
 
