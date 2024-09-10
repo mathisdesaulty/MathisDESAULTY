@@ -45,5 +45,3 @@ class ImageUser:
                     binarized_image[i][j] = 0
 
         return np.array(binarized_image)
-
-# Add a final newline
