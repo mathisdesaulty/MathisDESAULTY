@@ -19,7 +19,6 @@ class TestImageUser(unittest.TestCase):
         """
         Method executed before each test.
         """
-        self.image_user = ImageUser()
 
     def test_binarize_image_correct_output(self):
         """
@@ -27,7 +26,7 @@ class TestImageUser(unittest.TestCase):
         """
         image = np.array([[100, 150], [200, 50]])
         expected_output = [[0, 1], [1, 0]]
-        result = self.image_user.binarize_image(image, threshold=128)
+        result = ImageUser.binarize_image(image, threshold=128)
         self.assertEqual(result, expected_output)
 
     def test_binarize_image_default_threshold(self):
@@ -36,7 +35,7 @@ class TestImageUser(unittest.TestCase):
         """
         image = np.array([[100, 150], [200, 50]])
         expected_output = [[0, 1], [1, 0]]
-        result = self.image_user.binarize_image(image)  # Default threshold of 128
+        result = ImageUser.binarize_image(image)  # Default threshold of 128
         self.assertEqual(result, expected_output)
 
     def test_binarize_image_invalid_input(self):
@@ -44,7 +43,7 @@ class TestImageUser(unittest.TestCase):
         Test that binarize_image raises an exception for an invalid image.
         """
         with self.assertRaises(TypeError):
-            self.image_user.binarize_image("invalid_image")
+            ImageUser.binarize_image("invalid_image")
 
     def test_binarize_image_edge_cases(self):
         """
@@ -53,19 +52,19 @@ class TestImageUser(unittest.TestCase):
         # Empty image
         image = np.array([[]])
         expected_output = [[]]
-        result = self.image_user.binarize_image(image, threshold=128)
+        result = ImageUser.binarize_image(image, threshold=128)
         self.assertEqual(result, expected_output)
 
         # Image with all pixels above the threshold
         image = np.array([[255, 255], [255, 255]])
         expected_output = [[1, 1], [1, 1]]
-        result = self.image_user.binarize_image(image, threshold=128)
+        result = ImageUser.binarize_image(image, threshold=128)
         self.assertEqual(result, expected_output)
 
         # Image with all pixels below the threshold
         image = np.array([[0, 0], [0, 0]])
         expected_output = [[0, 0], [0, 0]]
-        result = self.image_user.binarize_image(image, threshold=128)
+        result = ImageUser.binarize_image(image, threshold=128)
         self.assertEqual(result, expected_output)
 
 if __name__ == '__main__':

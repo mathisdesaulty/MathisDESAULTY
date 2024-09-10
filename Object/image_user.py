@@ -14,8 +14,8 @@ class ImageUser:
     This class contains a method to convert a grayscale image to a binary image
     based on a specified threshold value.
     """
-
-    def binarize_image(self, image: np.ndarray, threshold: int = 128) -> List[List[int]]:
+    @staticmethod
+    def binarize_image(image: np.ndarray, threshold: int = 128) -> List[List[int]]:
         """
         Binarize the image based on the threshold value.
 
@@ -44,4 +44,6 @@ class ImageUser:
                 else:
                     binarized_image[i][j] = 0
 
-        return binarized_image
+        return np.array(binarized_image)
+
+# Add a final newline
