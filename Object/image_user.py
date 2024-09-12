@@ -5,43 +5,40 @@ This module contains the ImageUser class with methods for processing and binariz
 """
 
 from typing import List
-import numpy as np
+# import numpy as np
 
 class ImageUser:
     """
     Class to binarize images using a threshold.
 
-    This class contains a method to convert a grayscale image to a binary image
-    based on a specified threshold value.
+    This class contains methods for processing and binarizing images.
     """
+
     @staticmethod
-    def binarize_image(image: np.ndarray, threshold: int = 128) -> List[List[int]]:
+    def binarize_image(image: List[List[bool]], threshold: int = 128) -> List[List[bool]]:
         """
         Binarize the image based on the threshold value.
 
         Converts pixel values of the image to 1 if they are greater than or equal
         to the threshold, otherwise to 0.
 
-        :param image: The image to binarize, provided as a NumPy array.
+        :param image: The image to binarize, provided as a 2d List.
         :param threshold: Threshold value for binarization, default is 128.
-        :return: The binarized image as a list of lists of integers.
+        :return: The binarized image as a list of lists of booleans.
         """
-        # Check that the image is a NumPy array
-        if not isinstance(image, np.ndarray):
-            raise TypeError("The image must be a NumPy array.")
 
         # Get the dimensions of the image
-        rows, cols = image.shape
+        rows, cols = len(image), len(image[0])
 
         # Initialize the binarized image
-        binarized_image = [[0 for _ in range(cols)] for _ in range(rows)]
+        binarized_image = [[False for _ in range(cols)] for _ in range(rows)]
 
         # Binarize the image
         for i in range(rows):
             for j in range(cols):
                 if image[i][j] >= threshold:
-                    binarized_image[i][j] = 1
+                    binarized_image[i][j] = True
                 else:
-                    binarized_image[i][j] = 0
+                    binarized_image[i][j] = False
 
-        return np.array(binarized_image)
+        return binarized_image
