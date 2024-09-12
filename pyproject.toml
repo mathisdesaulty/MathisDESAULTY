@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "algoandailab-mathisdesaulty"
+version = "0.1.0"
+description = ""
+authors = ["mathisdesaulty <128808167+mathisdesaulty@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pylint = "^3.2.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
