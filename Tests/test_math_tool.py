@@ -10,6 +10,7 @@ and invalid inputs.
 import unittest
 import numpy as np
 from Object.math_tool import MathTool
+from Object.image_user import ImageUser
 
 class TestMathTool(unittest.TestCase):
     """

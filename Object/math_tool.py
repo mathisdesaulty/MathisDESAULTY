@@ -32,8 +32,12 @@ class MathTool:
         """
         Calculates the Hausdorff distance between two images.
         """
-        coords1 = np.argwhere(image1 == 1)
-        coords2 = np.argwhere(image2 == 1)
+        # Convert image1 and image2 to numpy arrays
+        npimage1 = np.array(image1)
+        npimage2 = np.array(image2)
+        # Get coordinates of True values in the images
+        coords1 = np.argwhere(npimage1 == 1)
+        coords2 = np.argwhere(npimage2 == 1)
         # Calculate Hausdorff distance in both directions
         distance1 = MathTool.calculate_one_way_distance(coords1, coords2)
         distance2 = MathTool.calculate_one_way_distance(coords2, coords1)
