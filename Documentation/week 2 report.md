@@ -20,3 +20,15 @@ My aim this week was to start coding slowly and gradually learn to use all the e
 - Using pylint: when writing objects and tests, I used pylint in particular and took into account everything it told me about how to write my code and what I could improve to have clean code. 
 
 - Modifications: after seeing the teacher's feedback on the first week, I had a few things I could change. Firstly, the images were no longer in binary but in Boolean and I'm going to have to take the time to optimise Haussford's distancing and complete it by looking at the nearest pixels to take as little time as possible. In particular, I think I can look to see if one of the pixels in a positive image is positive for the other and also look at the 8 around them. 
+
+## What has been unclear or problematic ?
+
+The only problem I see is how to do the K-NN, I'm thinking of creating a class with a test and training dataset as attributes, and using this to run the tests, but I'm not sure that's the best solution. 
+
+## What i learn this week
+
+As I said before, this week enabled me to learn how to use the poetry, unittest and pylint modules to set up a Python project. I was also able to learn and understand how to binarise an image and what the Haussdorf distance was and then use it on a binarised image.
+
+## What next ? 
+
+So the next stage is to set up the K-NN and think about what the hand will contain and how the project itself will be presented.
