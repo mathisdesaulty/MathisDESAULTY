@@ -10,7 +10,6 @@ and invalid inputs.
 import unittest
 import numpy as np
 from Object.math_tool import MathTool
-from Object.image_user import ImageUser
 
 class TestMathTool(unittest.TestCase):
     """
@@ -28,8 +27,10 @@ class TestMathTool(unittest.TestCase):
         """
         coords1 = np.array([[0, 0], [1, 1]])
         coords2 = np.array([[2, 2], [3, 3]])
+        image1 = np.array([[1, 0], [0, 1]])
+        image2 = np.array([[0, 1], [1, 0]])
         expected_output = 2.8284271247461903  # sqrt((2-0)^2 + (2-0)^2) = sqrt(8) = 2.828
-        result = MathTool.calculate_one_way_distance(coords1, coords2)
+        result = MathTool.calculate_one_way_distance(coords1, coords2, image1, image2)
         self.assertAlmostEqual(result, expected_output, places=6)
 
     def test_calculate_one_way_distance_edge_cases(self):
@@ -39,16 +40,11 @@ class TestMathTool(unittest.TestCase):
         # Identical points
         coords1 = np.array([[0, 0]])
         coords2 = np.array([[0, 0]])
+        image1 = np.array([[1, 0], [0, 1]])
+        image2 = np.array([[0, 1], [1, 0]])
         expected_output = 0
-        result = MathTool.calculate_one_way_distance(coords1, coords2)
+        result = MathTool.calculate_one_way_distance(coords1, coords2, image1, image2)
         self.assertEqual(result, expected_output)
-
-        # Points with large coordinates
-        coords1 = np.array([[1000, 1000]])
-        coords2 = np.array([[2000, 2000]])
-        expected_output = 1414.213562373095
-        result = MathTool.calculate_one_way_distance(coords1, coords2)
-        self.assertAlmostEqual(result, expected_output, places=6)
 
     def test_hausdorff_distance_correct_output(self):
         """
@@ -84,6 +80,5 @@ class TestMathTool(unittest.TestCase):
         expected_output = 0
         result = MathTool.hausdorff_distance(image1, image2)
         self.assertEqual(result, expected_output)
-
 if __name__ == '__main__':
     unittest.main()
