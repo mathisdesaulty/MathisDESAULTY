@@ -13,17 +13,14 @@ class KNNClassifier:
         :param k: Number of neighbors to use for classification.
         """
         self.k = k
-        self.X_train = None
-        self.y_train = None
+        self.dataset = None
 
-    def fit(self, X, y):
+    def fit(self, dataset):
         """
         Trains the KNN classifier with training data.
-        :param X: Training features.
-        :param y: Training labels.
+        :param dataset: Training data.
         """
-        self.X_train = X
-        self.y_train = y
+        self.dataset = dataset
 
     def predict(self, X):
         """
