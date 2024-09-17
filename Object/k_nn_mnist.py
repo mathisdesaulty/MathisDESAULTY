@@ -1,19 +1,25 @@
 import numpy as np
-from collections import Counter
-from Object.math_tool import MathTool
 
-class KNNClassifier:
+from collections import Counter
+
+from sklearn.datasets import fetch_openml
+from Object.math_tool import MathTool
+from Object.image_user import ImageUser
+
+class KNNClassifierMINST:
     """
     K-Nearest Neighbors classifier using Hausdorff distance.
     """
 
-    def __init__(self, k=3):
+    def __init__(self,k):
         """
         Initializes the KNN classifier with the number of neighbors to use.
         :param k: Number of neighbors to use for classification.
         """
+        data = fetch_openml('mnist_784', version=1)
+        self.images = data['data']
+        self.labels = data['target']
         self.k = k
-        self.dataset = None
 
     def fit(self, dataset):
         """
