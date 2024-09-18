@@ -15,7 +15,7 @@ class ImageUser:
     """
 
     @staticmethod
-    def binarize_image(image: List[List[bool]], threshold: int = 128) -> List[List[bool]]:
+    def binarize_image(image: List[List[int]], threshold: int = 128) -> List[List[bool]]:
         """
         Binarize the image based on the threshold value.
 
