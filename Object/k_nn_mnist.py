@@ -53,6 +53,25 @@ class KNNClassifierMINST:
         # Return the most common class label
         most_common = Counter(k_nearest_labels).most_common(1)
         return most_common[0][0]
+        return success_rate, (correct_predictions, total_predictions)
+
+    def _predict_with_custom_data(self, x, images, labels):
+        """
+        Predicts the class label for a single data point using a custom dataset.
+        :param x: Data point to classify.
+        :param images: Custom dataset images.
+        :param labels: Custom dataset labels.
+        :return: Predicted class label.
+        """
+        # Compute Hausdorff distances between x and all points in the custom dataset
+        distances = [MathTool.hausdorff_distance(x, x_train) for x_train in images]
+        # Get the labels of the k nearest neighbors
+        k_indices = np.argsort(distances)[:self.k]
+        k_nearest_labels = [labels[i] for i in k_indices]
+
+        # Return the most common class label
+        most_common = Counter(k_nearest_labels).most_common(1)
+        return most_common[0][0]
 
     def test(self, num_tests=100):
         """
@@ -77,21 +96,3 @@ class KNNClassifierMINST:
 
         success_rate = correct_predictions / total_predictions
         return success_rate, (correct_predictions, total_predictions)
-
-    def _predict_with_custom_data(self, x, images, labels):
-        """
-        Predicts the class label for a single data point using a custom dataset.
-        :param x: Data point to classify.
-        :param images: Custom dataset images.
-        :param labels: Custom dataset labels.
-        :return: Predicted class label.
-        """
-        # Compute Hausdorff distances between x and all points in the custom dataset
-        distances = [MathTool.hausdorff_distance(x, x_train) for x_train in images]
-        # Get the labels of the k nearest neighbors
-        k_indices = np.argsort(distances)[:self.k]
-        k_nearest_labels = [labels[i] for i in k_indices]
-
-        # Return the most common class label
-        most_common = Counter(k_nearest_labels).most_common(1)
-        return most_common[0][0]
