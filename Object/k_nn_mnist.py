@@ -53,7 +53,6 @@ class KNNClassifierMINST:
         # Return the most common class label
         most_common = Counter(k_nearest_labels).most_common(1)
         return most_common[0][0]
-        return success_rate, (correct_predictions, total_predictions)
 
     def _predict_with_custom_data(self, x, images, labels):
         """
