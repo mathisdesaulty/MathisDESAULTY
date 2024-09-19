@@ -1,5 +1,7 @@
 # Week 3 report
 
+Approximatively 2 hours by day this week so 10 hours or less.
+
 ## What I've learned
 
 This week has been mostly about code and thinking about how to set up the various elements, but what I've learnt in particular this week is how to use the coverage tool. This tool lets us know for each of our tests which part of which code it covers and the percentage of coverage of that code. I was then able to test it on the various tests I'd already done. This week I also had a chance to think about the K-NN algorithm, which I'll go into in more detail later.
@@ -17,10 +19,17 @@ Last week consisted of setting up the various tools to be able to implement the 
 
 #### Prediction and Tests
 
-The algorithm has no training function, in fact it will simply make comparisons and give a result. So all we need is a function to predict the K-NNs. I was able to create two functions: firstly, the prediction function: [def _predict(self, x):](https://github.com/mathisdesaulty/MathisDESAULTY/blob/c3692891743d930938445ab2cc248ce295faecb1/Object/k_nn_mnist.py#L39-L56), function for predicting a single element, as I don't think it's necessarily useful and most of the time tests and predictions are made on a group of images. In this function we calculate the distances of the image *x* and compare it with all the other images in the dataset, to find the element that stands out the most in the *k* neighbouring elements. The second function [def predict(self, x):](https://github.com/mathisdesaulty/MathisDESAULTY/blob/c3692891743d930938445ab2cc248ce295faecb1/Object/k_nn_mnist.py#L30-L37), allows the prediction of the first, but on all the elements of a list.
+The algorithm has no training function, in fact it will simply make comparisons and give a result. So all we need is a function to predict the K-NNs. I was able to create two functions: firstly, the prediction function: [def _predict(self, x):](https://github.com/mathisdesaulty/MathisDESAULTY/blob/c3692891743d930938445ab2cc248ce295faecb1/Object/k_nn_mnist.py#L39-L56), function for predicting a single element, as I don't think it's necessarily useful and most of the time tests and predictions are made on a group of images. In this function we calculate the distances of the image *x* and compare it with all the other images in the dataset, to find the element that stands out the most in the *k* neighbouring elements. The second function [def predict(self, x):](https://github.com/mathisdesaulty/MathisDESAULTY/blob/c3692891743d930938445ab2cc248ce295faecb1/Object/k_nn_mnist.py#L30-L37), allows the prediction of the first, but on all the elements of a list. 
+As far as the test function is concerned, I'm still not sure about keeping it in the k-nn, bearing in mind that I've made a test script for the k-nn, and its usefulness is simply to know its success rate depending on the initial data and the number of tests we want to run. 
 
-### Call 
+### K-NN review
+
+After launching the K-NN test function, I realised two things: firstly, the execution time for K-NN is very long, and secondly, the results are not very conclusive with approximately 10% success rate on samples of 200 images and 50 tests.  
 
 ## Issue
 
+This was due to the last problem I mentioned. I then decided to send a message to our professor to find out whether my algorithm was bad or whether this was normal. The first conclusion was that many improvements are possible that would drastically reduce the code execution time. Secondly, I was only testing on a very small part of the dataset, which explains the bad predictions, but what explains the bad predictions even more is the fact that the Haussford distance is not totally adapted in the case where I use it. 
+
 ## What's next ?
+
+The next steps would therefore be to review all the code that I discussed with the teachers: change the Haussford distance and find optimisations for this K-NN algorithm. The next step would then be to test with different distances: using the average of the distances of the nearest points, the sum of these distances, etc. 
