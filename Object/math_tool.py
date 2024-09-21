@@ -73,8 +73,7 @@ class MathTool:
                         difference = point1 - point2
                         squared_diff = difference ** 2
                         sum_squared_diff = np.sum(squared_diff)
-                        dist = np.sqrt(sum_squared_diff)
-                        min_dist = min(min_dist, dist)
+                        min_dist = min(min_dist, sum_squared_diff)
             max_min_dist = max(max_min_dist, min_dist)
         return max_min_dist
 
@@ -96,5 +95,4 @@ class MathTool:
         coords2 = np.argwhere(npimage2 == 1)
         # Calculate Hausdorff distance in both directions
         distance1 = MathTool.calculate_one_way_distance(coords1,coords2, npimage1, npimage2)
-        distance2 = MathTool.calculate_one_way_distance(coords2, coords1, npimage2, npimage1)
-        return float(max(distance1, distance2))
+        return float(distance1)
