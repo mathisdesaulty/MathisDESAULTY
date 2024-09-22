@@ -26,7 +26,7 @@ As far as the test function is concerned, I'm still not sure about keeping it in
 
 After launching the K-NN test function, I realised two things: firstly, the execution time for K-NN is very long, and secondly, the results are not very conclusive with approximately 10% success rate on samples of 200 images and 50 tests.  
 
-## Issue
+## Issues
 
 This was due to the last problem I mentioned. I then decided to send a message to our professor to find out whether my algorithm was bad or whether this was normal. The first conclusion was that many improvements are possible that would drastically reduce the code execution time. Secondly, I was only testing on a very small part of the dataset, which explains the bad predictions, but what explains the bad predictions even more is the fact that the Haussford distance is not totally adapted in the case where I use it. 
 
