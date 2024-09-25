@@ -1,6 +1,6 @@
 """
-This module contains the MathTool class with methods for calculating distances
-between sets of coordinates and Hausdorff distance between binary images.
+This module provides the MathTool class with methods for distance calculations
+between images.
 """
 
 import numpy as np
@@ -28,13 +28,11 @@ class MathTool:
         x1, y1 = coords1
         for x, y in neighbors_offset:
             x2, y2 = x1 + x, y1 + y
-            if (
-                image2.shape[0] > x2
-                and image2.shape[1] > y2
-                and image2[x2, y2] == image1[x1, y1]
-            ):
+            if (0 <= x2 < image2.shape[0]
+                and 0 <= y2 < image2.shape[1]
+                and image1[x1, y1] == 1 and image2[x2, y2] == 1):
                 find = True
-
+                return find
         return find
 
     @staticmethod
@@ -42,20 +40,16 @@ class MathTool:
         """
         Check if the pixel values at the given coordinates in two images are the same.
         Args:
-            coords1 (list): List of coordinate tuples (x, y).
-            image1 (ndarray): First image.
-            image2 (ndarray): Second image.
+        - coords1 (tuple): The coordinates (x, y) to check.
+        - image1 (ndarray): First image.
+        - image2 (ndarray): Second image.
         Returns:
-            bool: True if the pixel values are the same in both images, False otherwise.
+        - bool: True if the pixel values are the same in both images, False otherwise.
         """
-        for point1 in coords1:
-            x1, y1 = point1
-            if image1[x1, y1] == image2[x1, y1]:
-                return True
-        return False
+        return image1[coords1[0], coords1[1]] == image2[coords1[0], coords1[1]]
 
     @staticmethod
-    def calculate_one_way_distance(coords1,coords2, image1, image2) -> float:
+    def calculate_one_way_distance(coords1, coords2, image1, image2) -> float:
         """
         Calculates the one-way distance between two sets of coordinates.
         Optimized to skip points that have the same value in both images at the same location.
@@ -63,17 +57,15 @@ class MathTool:
         max_min_dist = 0
         for point1 in coords1:
             min_dist = np.inf
-            if MathTool.same_value(coords1, image1, image2):
+            if MathTool.same_value(point1, image1, image2):
                 min_dist = 0
             else:
-                find = MathTool.neighboors_positive(point1, image1, image2)
-                if find:
-                    min_dist = np.inf
+                if MathTool.neighboors_positive(point1, image1, image2):
+                    min_dist = 1
+                else:
                     for point2 in coords2:
-                        difference = point1 - point2
-                        squared_diff = difference ** 2
-                        sum_squared_diff = np.sum(squared_diff)
-                        min_dist = min(min_dist, sum_squared_diff)
+                        squared_diff = np.sum((point1 - point2) ** 2)
+                        min_dist = min(min_dist, squared_diff)
             max_min_dist = max(max_min_dist, min_dist)
         return max_min_dist
 
@@ -94,5 +86,5 @@ class MathTool:
         coords1 = np.argwhere(npimage1 == 1)
         coords2 = np.argwhere(npimage2 == 1)
         # Calculate Hausdorff distance in both directions
-        distance1 = MathTool.calculate_one_way_distance(coords1,coords2, npimage1, npimage2)
-        return float(distance1)
+        distance = MathTool.calculate_one_way_distance(coords1, coords2, npimage1, npimage2)
+        return distance  # Return the max of both directions

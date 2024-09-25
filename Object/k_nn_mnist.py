@@ -72,7 +72,7 @@ class KNNClassifierMINST:
         most_common = Counter(k_nearest_labels).most_common(1)
         return most_common[0][0]
 
-    def test(self, num_tests=100):
+    def performance(self, num_tests=100):
         """
         Tests the classifier on a subset of the dataset.
         :param num_tests: Number of tests to perform.

@@ -15,7 +15,6 @@ class TestMathTool(unittest.TestCase):
     """
     Test cases for the MathTool class.
     """
-
     def setUp(self):
         """
         Method executed before each test.
@@ -26,10 +25,10 @@ class TestMathTool(unittest.TestCase):
         Test that calculate_one_way_distance produces the expected output for specific data.
         """
         coords1 = np.array([[0, 0], [1, 1]])
-        coords2 = np.array([[2, 2], [3, 3]])
+        coords2 = np.array([[1, 0], [0, 1]])
         image1 = np.array([[1, 0], [0, 1]])
         image2 = np.array([[0, 1], [1, 0]])
-        expected_output = 2.8284271247461903  # sqrt((2-0)^2 + (2-0)^2) = sqrt(8) = 2.828
+        expected_output = 1
         result = MathTool.calculate_one_way_distance(coords1, coords2, image1, image2)
         self.assertAlmostEqual(result, expected_output, places=6)
 
@@ -42,7 +41,7 @@ class TestMathTool(unittest.TestCase):
         coords2 = np.array([[0, 0]])
         image1 = np.array([[1, 0], [0, 1]])
         image2 = np.array([[0, 1], [1, 0]])
-        expected_output = 0
+        expected_output = 1
         result = MathTool.calculate_one_way_distance(coords1, coords2, image1, image2)
         self.assertEqual(result, expected_output)
 
@@ -80,5 +79,6 @@ class TestMathTool(unittest.TestCase):
         expected_output = 0
         result = MathTool.hausdorff_distance(image1, image2)
         self.assertEqual(result, expected_output)
+
 if __name__ == '__main__':
     unittest.main()
