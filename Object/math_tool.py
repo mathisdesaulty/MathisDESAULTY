@@ -87,4 +87,46 @@ class MathTool:
         coords2 = np.argwhere(npimage2 == 1)
         # Calculate Hausdorff distance in both directions
         distance = MathTool.calculate_one_way_distance(coords1, coords2, npimage1, npimage2)
-        return distance  # Return the max of both directions
+        return distance
+
+    @staticmethod
+    def calculate_sum_of_distances(coords1, coords2, image1, image2) -> float:
+        """
+        Calculates the sum of Euclidean distances between two sets of coordinates.
+        Optimized to skip points that have the same value in both images at the same location
+        or have positive neighbors.
+        """
+        total_distance = 0
+        for point1 in coords1:
+            min_dist = np.inf
+            if MathTool.same_value(point1, image1, image2):
+                min_dist = 0
+            elif MathTool.neighboors_positive(point1, image1, image2):
+                min_dist = 1
+            else:
+                for point2 in coords2:
+                    squared_diff = np.sum((point1 - point2) ** 2)
+                    euclidean_dist = np.sqrt(squared_diff)  # Euclidean distance with square root
+                    min_dist = min(min_dist, euclidean_dist)
+            total_distance += min_dist
+        return total_distance
+
+    @staticmethod
+    def hausdorff_distance_sum(image1, image2) -> float:
+        """
+        Calculates the sum of Hausdorff distances (using Euclidean distance) between two images.
+        """
+        # Convert image1 and image2 to numpy arrays
+        npimage1 = np.array(image1)
+        npimage2 = np.array(image2)
+        # Check if either image is empty
+        if npimage1.size == 0 or npimage2.size == 0:
+            if npimage1.size != npimage2.size:
+                return float('inf')
+            return 0
+        # Get coordinates of True (or 1) values in the images
+        coords1 = np.argwhere(npimage1 == 1)
+        coords2 = np.argwhere(npimage2 == 1)
+        # Calculate the sum of Hausdorff distances in both directions
+        sum_distance = MathTool.calculate_sum_of_distances(coords1, coords2, npimage1, npimage2)
+        return sum_distance  # Sum of both directions

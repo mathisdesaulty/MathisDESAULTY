@@ -27,25 +27,35 @@ class KNNClassifierMINST:
         self.labels = data['target'][:size].to_numpy().astype(int)
         self.k = k
 
-    def predict(self, x):
+    def predict(self, x, distance_metric='hausdorff'):
         """
         Predicts the class labels for the provided data.
         :param x: Data to classify.
+        :param distance_metric: Distance metric to use ('hausdorff' or 'hausdorff_sum').
         :return: Predicted class labels.
         """
-        predictions = [self._predict(xi) for xi in x]
+        predictions = [self._predict(xi, distance_metric) for xi in x]
         return np.array(predictions)
 
-    def _predict(self, x):
+    def _predict(self, x, distance_metric):
         """
         Predicts the class label for a single data point.
         :param x: Data point to classify.
+        :param distance_metric: Distance metric to use ('hausdorff' or 'hausdorff_sum').
         :return: Predicted class label.
         """
-        # Compute Hausdorff distances between x and all points in the training set
-        distances = [
-            MathTool.hausdorff_distance(x, x_train) for index, x_train in enumerate(self.images)
-        ]
+        # Compute distances between x and all points in the training set
+        if distance_metric == 'hausdorff':
+            distances = [
+                MathTool.hausdorff_distance(x, x_train) for x_train in self.images
+            ]
+        elif distance_metric == 'hausdorff_sum':
+            distances = [
+                MathTool.hausdorff_distance_sum(x, x_train) for x_train in self.images
+            ]
+        else:
+            raise ValueError("Unsupported distance metric")
+
         # Get the labels of the k nearest neighbors
         k_indices = np.argsort(distances)[:self.k]
         k_nearest_labels = [self.labels[i] for i in k_indices]
@@ -54,16 +64,23 @@ class KNNClassifierMINST:
         most_common = Counter(k_nearest_labels).most_common(1)
         return most_common[0][0]
 
-    def _predict_with_custom_data(self, x, images, labels):
+    def _predict_with_custom_data(self, x, images, labels, distance_metric):
         """
         Predicts the class label for a single data point using a custom dataset.
         :param x: Data point to classify.
         :param images: Custom dataset images.
         :param labels: Custom dataset labels.
+        :param distance_metric: Distance metric to use ('hausdorff' or 'hausdorff_sum').
         :return: Predicted class label.
         """
-        # Compute Hausdorff distances between x and all points in the custom dataset
-        distances = [MathTool.hausdorff_distance(x, x_train) for x_train in images]
+        # Compute distances between x and all points in the custom dataset
+        if distance_metric == 'hausdorff':
+            distances = [MathTool.hausdorff_distance(x, x_train) for x_train in images]
+        elif distance_metric == 'hausdorff_sum':
+            distances = [MathTool.hausdorff_distance_sum(x, x_train) for x_train in images]
+        else:
+            raise ValueError("Unsupported distance metric")
+
         # Get the labels of the k nearest neighbors
         k_indices = np.argsort(distances)[:self.k]
         k_nearest_labels = [labels[i] for i in k_indices]
@@ -72,10 +89,11 @@ class KNNClassifierMINST:
         most_common = Counter(k_nearest_labels).most_common(1)
         return most_common[0][0]
 
-    def performance(self, num_tests=100):
+    def performance(self, num_tests=100, distance_metric='hausdorff'):
         """
         Tests the classifier on a subset of the dataset.
         :param num_tests: Number of tests to perform.
+        :param distance_metric: Distance metric to use ('hausdorff' or 'hausdorff_sum').
         :return: Success rate and a tuple of correct and total predictions.
         """
         correct_predictions = 0
@@ -89,7 +107,8 @@ class KNNClassifierMINST:
             other_labels = np.concatenate((self.labels[:i], self.labels[i + 1:]))
 
             # Predict using the remaining images
-            prediction = self._predict_with_custom_data(image, other_images, other_labels)
+            prediction = self._predict_with_custom_data(
+            image, other_images, other_labels, distance_metric)
             if prediction == label:
                 correct_predictions += 1
 
