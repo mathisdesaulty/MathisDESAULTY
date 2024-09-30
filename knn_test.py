@@ -2,17 +2,17 @@
 from Object.k_nn_mnist import KNNClassifierMINST
 import time
 
-knn = KNNClassifierMINST(5,500)
+knn = KNNClassifierMINST(5,60000)
 
 print(len(knn.images))
 start_time = time.time()
-print(knn.performance(20))
+print(knn.performance(1))
 end_time = time.time()
 
 print(f"Execution time: {end_time - start_time} seconds")
 
 start_time_hausdorff = time.time()
-print(knn.performance(20, "hausdorff_sum"))
+print(knn.performance(1, "hausdorff_sum"))
 end_time_hausdorff = time.time()
 
 print(f"Execution time for hausdorff_sum: {end_time_hausdorff - start_time_hausdorff} seconds")
