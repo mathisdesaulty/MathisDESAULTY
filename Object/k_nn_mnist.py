@@ -3,7 +3,6 @@ K-Nearest Neighbors classifier using Hausdorff distance for MNIST dataset.
 """
 
 from collections import Counter
-import numpy as np
 from sklearn.datasets import fetch_openml
 from Object.math_tool import MathTool
 from Object.image_user import ImageUser
@@ -22,9 +21,9 @@ class KNNClassifierMINST:
         data = fetch_openml('mnist_784', version=1)
         raw_images = data['data'][:size]
         self.images = [
-            ImageUser.binarize_image(image.reshape(28, 28)) for image in raw_images.to_numpy()
+            ImageUser.binarize_image(image.reshape(28,28)) for image in raw_images.to_numpy()
         ]
-        self.labels = data['target'][:size].to_numpy().astype(int)
+        self.labels = data['target'][:size].astype(int).tolist()
         self.k = k
 
     def predict(self, x, distance_metric='hausdorff'):
@@ -35,7 +34,7 @@ class KNNClassifierMINST:
         :return: Predicted class labels.
         """
         predictions = [self._predict(xi, distance_metric) for xi in x]
-        return np.array(predictions)
+        return predictions
 
     def _predict(self, x, distance_metric):
         """
@@ -57,7 +56,7 @@ class KNNClassifierMINST:
             raise ValueError("Unsupported distance metric")
 
         # Get the labels of the k nearest neighbors
-        k_indices = np.argsort(distances)[:self.k]
+        k_indices = sorted(range(len(distances)), key=lambda i: distances[i])[:self.k]
         k_nearest_labels = [self.labels[i] for i in k_indices]
 
         # Return the most common class label
@@ -82,7 +81,7 @@ class KNNClassifierMINST:
             raise ValueError("Unsupported distance metric")
 
         # Get the labels of the k nearest neighbors
-        k_indices = np.argsort(distances)[:self.k]
+        k_indices = sorted(range(len(distances)), key=lambda i: distances[i])[:self.k]
         k_nearest_labels = [labels[i] for i in k_indices]
 
         # Return the most common class label
@@ -103,12 +102,12 @@ class KNNClassifierMINST:
             image = self.images[i]
             label = self.labels[i]
             # Exclude the current image from the training set
-            other_images = np.array(self.images[:i] + self.images[i + 1:])
-            other_labels = np.concatenate((self.labels[:i], self.labels[i + 1:]))
+            other_images = self.images[:i] + self.images[i + 1:]
+            other_labels = self.labels[:i] + self.labels[i + 1:]
 
             # Predict using the remaining images
             prediction = self._predict_with_custom_data(
-            image, other_images, other_labels, distance_metric)
+                image, other_images, other_labels, distance_metric)
             if prediction == label:
                 correct_predictions += 1
 
