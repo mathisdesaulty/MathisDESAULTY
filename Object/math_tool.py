@@ -7,9 +7,29 @@ class MathTool:
     """
     This class provides mathematical tools for distance calculations.
     """
+    @staticmethod
+    def generate_neighbors_offsets(n):
+        """
+        Generate a list of neighbor offsets for a given number of circles.
+
+        Parameters:
+        - n (int): The number of circles of neighbors to generate.
+
+        Returns:
+        - neighbors_offset (list of tuples): A list of (x, y) offsets for the neighbors,
+          sorted from the farthest to the nearest.
+        """
+        neighbors_offset = []
+        for i in range(-n, n + 1):
+            for j in range(-n, n + 1):
+                neighbors_offset.append((i, j))
+        
+        # Sort the offsets by distance from the origin (0, 0), farthest to nearest
+        neighbors_offset.sort(key=lambda offset: (offset[0]**2 + offset[1]**2), reverse=False)        
+        return neighbors_offset
 
     @staticmethod
-    def neighboors_positive(coords1, image1, image2):
+    def neighboors_positive(coords1, image1, image2,neighbors_offset):
         """
         Check if the given coordinates have positive neighbors in the provided images.
         Parameters:
@@ -19,9 +39,6 @@ class MathTool:
         Returns:
         - find (bool): True if positive neighbors are found, False otherwise.
         """
-        neighbors_offset = [(-1, -1), (-1, 0), (-1, 1),
-                            (0, -1), (0, 0), (0, 1),
-                            (1, -1), (1, 0), (1, 1)]
         find = False
         x1, y1 = coords1
         for x, y in neighbors_offset:
@@ -30,24 +47,11 @@ class MathTool:
                 and 0 <= y2 < len(image2[0])
                 and image1[x1][y1] == 1 and image2[x2][y2] == 1):
                 find = True
-                return find
-        return find
+                return (find, (x, y))
+        return (find,(0,0))
 
     @staticmethod
-    def same_value(coords1, image1, image2):
-        """
-        Check if the pixel values at the given coordinates in two images are the same.
-        Args:
-        - coords1 (tuple): The coordinates (x, y) to check.
-        - image1 (list of lists): First image.
-        - image2 (list of lists): Second image.
-        Returns:
-        - bool: True if the pixel values are the same in both images, False otherwise.
-        """
-        return image1[coords1[0]][coords1[1]] == image2[coords1[0]][coords1[1]]
-
-    @staticmethod
-    def calculate_one_way_distance(coords1, coords2, image1, image2) -> float:
+    def calculate_one_way_distance(coords1, coords2, image1, image2, neighbors_offset) -> float:
         """
         Calculates the one-way distance between two sets of coordinates.
         Optimized to skip points that have the same value in both images at the same location.
@@ -55,20 +59,21 @@ class MathTool:
         max_min_dist = 0
         for point1 in coords1:
             min_dist = float('inf')
-            if MathTool.same_value(point1, image1, image2):
+            if image2[point1[0]][point1[1]] == 1:
                 min_dist = 0
             else:
-                if MathTool.neighboors_positive(point1, image1, image2):
-                    min_dist = 1
+                neighbors = MathTool.neighboors_positive(point1, image1, image2, neighbors_offset)
+                if neighbors[0]:
+                    min_dist = neighbors[1][0]**2 + neighbors[1][1]**2
                 else:
                     for point2 in coords2:
                         squared_diff = sum((a - b) ** 2 for a, b in zip(point1, point2))
                         min_dist = min(min_dist, squared_diff)
             max_min_dist = max(max_min_dist, min_dist)
-        return max_min_dist
+        return max_min_dist 
 
     @staticmethod
-    def hausdorff_distance(image1, image2) -> float:
+    def hausdorff_distance(image1, image2,neighbors_offset) -> float:
         """
         Calculates the Hausdorff distance between two images.
         """
@@ -82,12 +87,12 @@ class MathTool:
         coords1 = [(i, j) for i in range(len(image1)) for j in range(len(image1[0])) if image1[i][j] == 1]
         coords2 = [(i, j) for i in range(len(image2)) for j in range(len(image2[0])) if image2[i][j] == 1]
         # Calculate Hausdorff distance in both directions
-        distance1 = MathTool.calculate_one_way_distance(coords1, coords2, image1, image2)
-        distance2 = MathTool.calculate_one_way_distance(coords2, coords1, image2, image1)
+        distance1 = MathTool.calculate_one_way_distance(coords1, coords2, image1, image2,neighbors_offset)
+        distance2 = MathTool.calculate_one_way_distance(coords2, coords1, image2, image1,neighbors_offset)
         return max(distance1, distance2)  # Maximum of both directions
 
     @staticmethod
-    def calculate_sum_of_distances(coords1, coords2, image1, image2) -> float:
+    def calculate_sum_of_distances(coords1, coords2, image1, image2,neighbors_offset) -> float:
         """
         Calculates the sum of Euclidean distances between two sets of coordinates.
         Optimized to skip points that have the same value in both images at the same location
@@ -96,20 +101,22 @@ class MathTool:
         total_distance = 0
         for point1 in coords1:
             min_dist = float('inf')
-            if MathTool.same_value(point1, image1, image2):
+            if image2[point1[0]][point1[1]] is True:
                 min_dist = 0
-            elif MathTool.neighboors_positive(point1, image1, image2):
-                min_dist = 1
             else:
-                for point2 in coords2:
-                    squared_diff = sum((a - b) ** 2 for a, b in zip(point1, point2))
-                    euclidean_dist = squared_diff ** 0.5  # Euclidean distance with square root
-                    min_dist = min(min_dist, euclidean_dist)
+                neighbors = MathTool.neighboors_positive(point1, image1, image2,neighbors_offset)
+                if neighbors[0]:
+                    min_dist = (neighbors[1][0]**2 + neighbors[1][1]**2)**0.5
+                else:
+                    for point2 in coords2:
+                        squared_diff = sum((a - b) ** 2 for a, b in zip(point1, point2))
+                        euclidean_dist = squared_diff ** 0.5  # Euclidean distance with square root
+                        min_dist = min(min_dist, euclidean_dist)
             total_distance += min_dist
         return total_distance
 
     @staticmethod
-    def hausdorff_distance_sum(image1, image2) -> float:
+    def hausdorff_distance_sum(image1, image2,neighbors_offset) -> float:
         """
         Calculates the sum of Hausdorff distances (using Euclidean distance) between two images.
         """
@@ -122,6 +129,6 @@ class MathTool:
         coords1 = [(i, j) for i in range(len(image1)) for j in range(len(image1[0])) if image1[i][j] == 1]
         coords2 = [(i, j) for i in range(len(image2)) for j in range(len(image2[0])) if image2[i][j] == 1]
         # Calculate the sum of Hausdorff distances in both directions
-        sum_distance = MathTool.calculate_sum_of_distances(coords1, coords2, image1, image2)
-        sum_distance += MathTool.calculate_sum_of_distances(coords2, coords1, image2, image1)
+        sum_distance = MathTool.calculate_sum_of_distances(coords1, coords2, image1, image2,neighbors_offset)
+        sum_distance += MathTool.calculate_sum_of_distances(coords2, coords1, image2, image1,neighbors_offset)
         return sum_distance  # Sum of both directions

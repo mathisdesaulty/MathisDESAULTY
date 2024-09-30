@@ -65,7 +65,6 @@ class TestMathTool(unittest.TestCase):
         image2 = [[]]
         expected_output = float('inf')
         result = MathTool.hausdorff_distance(image1, image2)
-
         self.assertEqual(result, expected_output)
 
         # Identical images
@@ -73,7 +72,6 @@ class TestMathTool(unittest.TestCase):
         image2 = [[1, 1], [1, 1]]
         expected_output = 0
         result = MathTool.hausdorff_distance(image1, image2)
-
         self.assertEqual(result, expected_output)
 
     def test_calculate_sum_of_distances_correct_output(self):
@@ -151,18 +149,33 @@ class TestMathTool(unittest.TestCase):
         coords1 = (0, 0)
         self.assertFalse(MathTool.neighboors_positive(coords1, image1, image2))
 
-    def test_same_value(self):
+    def test_generate_neighbors_offsets(self):
         """
-        Test the same_value method.
+        Test the generate_neighbors_offsets method.
         """
-        image1 = [[1, 0], [0, 1]]
-        image2 = [[0, 1], [1, 0]]
-        coords1 = (0, 0)
-        self.assertFalse(MathTool.same_value(coords1, image1, image2))
-        coords1 = (1, 1)
-        self.assertFalse(MathTool.same_value(coords1, image1, image2))
-        image2 = [[1, 0], [0, 1]]
-        self.assertTrue(MathTool.same_value(coords1, image1, image2))
+        # Test with n = 1
+        n = 1
+        expected_output = [(-1, -1), (-1, 0), (-1, 1),
+                           (0, -1), (0, 0), (0, 1),
+                           (1, -1), (1, 0), (1, 1)]
+        result = MathTool.generate_neighbors_offsets(n)
+        self.assertEqual(result, expected_output)
+
+        # Test with n = 0
+        n = 0
+        expected_output = [(0, 0)]
+        result = MathTool.generate_neighbors_offsets(n)
+        self.assertEqual(result, expected_output)
+
+        # Test with n = 2
+        n = 2
+        expected_output = [(-2, -2), (-2, -1), (-2, 0), (-2, 1), (-2, 2),
+                           (-1, -2), (-1, -1), (-1, 0), (-1, 1), (-1, 2),
+                           (0, -2), (0, -1), (0, 0), (0, 1), (0, 2),
+                           (1, -2), (1, -1), (1, 0), (1, 1), (1, 2),
+                           (2, -2), (2, -1), (2, 0), (2, 1), (2, 2)]
+        result = MathTool.generate_neighbors_offsets(n)
+        self.assertEqual(result, expected_output)
 
 if __name__ == '__main__':
     unittest.main()
