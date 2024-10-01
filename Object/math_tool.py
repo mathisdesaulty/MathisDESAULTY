@@ -16,7 +16,7 @@ class MathTool:
         - n (int): The number of circles of neighbors to generate.
 
         Returns:
-        - neighbors_offset (list of tuples): A list of (x, y) offsets for the neighbors,
+        - list of tuples: A list of (x, y) offsets for the neighbors,
           sorted from the farthest to the nearest.
         """
         neighbors_offset = []
@@ -37,9 +37,11 @@ class MathTool:
         - coords1 (tuple): The coordinates (x, y) to check for positive neighbors.
         - image1 (list of lists): The first image.
         - image2 (list of lists): The second image.
+        - neighbors_offset (list of tuples): List of neighbor offsets.
 
         Returns:
-        - find (bool): True if positive neighbors are found, False otherwise.
+        - tuple: (bool, tuple): True if positive neighbors are found, False otherwise.
+          The tuple contains the offset of the positive neighbor.
         """
         find = False
         x1, y1 = coords1
@@ -57,6 +59,16 @@ class MathTool:
         """
         Calculates the one-way distance between two sets of coordinates.
         Optimized to skip points that have the same value in both images at the same location.
+
+        Parameters:
+        - coords1 (list of tuples): Coordinates from the first image.
+        - coords2 (list of tuples): Coordinates from the second image.
+        - image1 (list of lists): The first image.
+        - image2 (list of lists): The second image.
+        - neighbors_offset (list of tuples): List of neighbor offsets.
+
+        Returns:
+        - float: The calculated one-way distance.
         """
         max_min_dist = 0
         for point1 in coords1:
@@ -78,6 +90,14 @@ class MathTool:
     def hausdorff_distance(image1, image2, neighbors_offset) -> float:
         """
         Calculates the Hausdorff distance between two images.
+
+        Parameters:
+        - image1 (list of lists): The first image.
+        - image2 (list of lists): The second image.
+        - neighbors_offset (list of tuples): List of neighbor offsets.
+
+        Returns:
+        - float: The calculated Hausdorff distance.
         """
         # Check if either image is empty
         if not image1 or not image2 or image1 == image2:
@@ -103,6 +123,16 @@ class MathTool:
         Calculates the sum of Euclidean distances between two sets of coordinates.
         Optimized to skip points that have the same value in both images at the same location
         or have positive neighbors.
+
+        Parameters:
+        - coords1 (list of tuples): Coordinates from the first image.
+        - coords2 (list of tuples): Coordinates from the second image.
+        - image1 (list of lists): The first image.
+        - image2 (list of lists): The second image.
+        - neighbors_offset (list of tuples): List of neighbor offsets.
+
+        Returns:
+        - float: The calculated sum of distances.
         """
         total_distance = 0
         for point1 in coords1:
@@ -125,6 +155,14 @@ class MathTool:
     def hausdorff_distance_sum(image1, image2, neighbors_offset) -> float:
         """
         Calculates the sum of Hausdorff distances (using Euclidean distance) between two images.
+
+        Parameters:
+        - image1 (list of lists): The first image.
+        - image2 (list of lists): The second image.
+        - neighbors_offset (list of tuples): List of neighbor offsets.
+
+        Returns:
+        - float: The calculated sum of Hausdorff distances.
         """
         # Check if either image is empty
         if not image1 or not image2 or image1 == image2:
@@ -148,6 +186,16 @@ class MathTool:
     def sum_distance_one_way(coords1, coords2, image1, image2, neighbors_offset):
         """
         Calculates the sum of distances between two sets of coordinates.
+
+        Parameters:
+        - coords1 (list of tuples): Coordinates from the first image.
+        - coords2 (list of tuples): Coordinates from the second image.
+        - image1 (list of lists): The first image.
+        - image2 (list of lists): The second image.
+        - neighbors_offset (list of tuples): List of neighbor offsets.
+
+        Returns:
+        - float: The calculated sum of distances.
         """
         if not coords1 or not coords2:
             return float('inf')
@@ -171,6 +219,14 @@ class MathTool:
     def distance_d6(image1, image2, neighbors_offset) -> float:
         """
         Calculates the distance between two images using the d6 metric.
+
+        Parameters:
+        - image1 (list of lists): The first image.
+        - image2 (list of lists): The second image.
+        - neighbors_offset (list of tuples): List of neighbor offsets.
+
+        Returns:
+        - float: The calculated d6 distance.
         """
         if not image1 or not image2 or image1 == image2:
             return 0
@@ -187,6 +243,14 @@ class MathTool:
     def distance_d22(image1, image2, neighbors_offset):
         """
         Calculates the distance between two images using the d22 metric.
+
+        Parameters:
+        - image1 (list of lists): The first image.
+        - image2 (list of lists): The second image.
+        - neighbors_offset (list of tuples): List of neighbor offsets.
+
+        Returns:
+        - float: The calculated d22 distance.
         """
         distance1 = MathTool.distance_d6(image1, image2, neighbors_offset)
         distance2 = MathTool.distance_d6(
@@ -197,6 +261,14 @@ class MathTool:
     def distance_d23(image1, image2, neighbors_offset):
         """
         Calculates the distance between two images using the d23 metric.
+
+        Parameters:
+        - image1 (list of lists): The first image.
+        - image2 (list of lists): The second image.
+        - neighbors_offset (list of tuples): List of neighbor offsets.
+
+        Returns:
+        - float: The calculated d23 distance.
         """
         
         distance1 = MathTool.distance_d6(image1, image2, neighbors_offset)

@@ -36,11 +36,13 @@ class KNNClassifierMINST:
         predictions = [self._predict(xi, distance_metric) for xi in x]
         return predictions
 
-    def _predict(self, x, distance_metric, neighbors_offset = MathTool.generate_neighbors_offsets(4)):
+    def _predict(
+        self, x, distance_metric, neighbors_offset = MathTool.generate_neighbors_offsets(4)):
         """
         Predicts the class label for a single data point.
         :param x: Data point to classify.
         :param distance_metric: Distance metric to use ('hausdorff' or 'hausdorff_sum').
+        :param neighbors_offset: Precomputed neighbors offsets for Hausdorff distance.
         :return: Predicted class label.
         """
         # Compute distances between x and all points in the training set
@@ -50,7 +52,8 @@ class KNNClassifierMINST:
             ]
         elif distance_metric == 'hausdorff_sum':
             distances = [
-                MathTool.hausdorff_distance_sum(x, x_train, neighbors_offset) for x_train in self.images
+                MathTool.hausdorff_distance_sum(
+                    x, x_train, neighbors_offset) for x_train in self.images
             ]
         else:
             raise ValueError("Unsupported distance metric")
@@ -63,20 +66,25 @@ class KNNClassifierMINST:
         most_common = Counter(k_nearest_labels).most_common(1)
         return most_common[0][0]
 
-    def _predict_with_custom_data(self, x, images, labels, distance_metric,neighbors_offset = MathTool.generate_neighbors_offsets(4)):
+    def _predict_with_custom_data(
+        self, x, images, labels, distance_metric, 
+        neighbors_offset = MathTool.generate_neighbors_offsets(4)):
         """
         Predicts the class label for a single data point using a custom dataset.
         :param x: Data point to classify.
         :param images: Custom dataset images.
         :param labels: Custom dataset labels.
         :param distance_metric: Distance metric to use ('hausdorff' or 'hausdorff_sum').
+        :param neighbors_offset: Precomputed neighbors offsets for Hausdorff distance.
         :return: Predicted class label.
         """
         # Compute distances between x and all points in the custom dataset
         if distance_metric == 'hausdorff':
-            distances = [MathTool.hausdorff_distance(x, x_train,neighbors_offset) for x_train in images]
+            distances = [
+                MathTool.hausdorff_distance(x, x_train, neighbors_offset) for x_train in images]
         elif distance_metric == 'hausdorff_sum':
-            distances = [MathTool.hausdorff_distance_sum(x, x_train,neighbors_offset) for x_train in images]
+            distances = [
+                MathTool.hausdorff_distance_sum(x, x_train, neighbors_offset) for x_train in images]
         else:
             raise ValueError("Unsupported distance metric")
 

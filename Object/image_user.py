@@ -23,8 +23,11 @@ class ImageUser:
         to the threshold, otherwise to 0.
 
         :param image: The image to binarize, provided as a 2d List.
+            Example: [[100, 150], [200, 50]]
         :param threshold: Threshold value for binarization, default is 128.
+            Example: 128
         :return: The binarized image as a list of lists of booleans.
+            Example: [[False, True], [True, False]]
         """
 
         # Get the dimensions of the image
