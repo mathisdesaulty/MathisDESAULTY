@@ -8,6 +8,8 @@ The tests are present in different files:
 
 All tests tend to have 100% coverage of the entire class they are testing (In progress). In each of the functions, the docstring lets you know what the test does and checks most of the problematic or useful cases.
 
+## Coverage of the 01/10/24
+
 | Name                        | Stmts | Miss | Cover |
 |-----------------------------|-------|------|-------|
 | Notebooks\__init__.py        |     0 |    0 | 100%  |
