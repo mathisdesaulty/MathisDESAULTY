@@ -9,6 +9,7 @@
 - Research for other distances
 - Numpy to list
 - Neighbors functions and performances acceleration
+- Distance D22/23
 
 ## Issues
 
