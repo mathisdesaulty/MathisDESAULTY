@@ -1,49 +1,21 @@
-from sklearn.datasets import fetch_openml
-import matplotlib.pyplot as plt
-import numpy as np
-import os
-os.chdir('..')
 
+from Object.k_nn_mnist import KNNClassifierMINST
+import time
 
-# Import MNIST dataset
-mnist = fetch_openml('mnist_784', version=1)
+knn = KNNClassifierMINST(5,2000)
 
-from Object.image_user import ImageUser
-from Object.math_tool import MathTool
+print(f"size of the dataset: {str(len(knn.images))} images for {knn.k} nearest neighbors.")
+start_time = time.time()
+performance = knn.performance(10)
+print(f"Performance: {performance[0]}, ratio of correct predictions: {performance[1]}")
+end_time = time.time()
 
+print(f"Execution time: {end_time - start_time} seconds")
 
-n = 1000
-image = None
-image2 = None
-while image is None:
-    if mnist.target.iloc[n] == '1':
-        image = mnist.data.iloc[n]
-    n+=1
+start_time_hausdorff = time.time()
+performance = knn.performance(10, "hausdorff_sum")
+print(f"Performance: {performance[0]}, ratio of correct predictions: {performance[1]}")
 
-while image2 is None:
-    n += 1
-    if mnist.target.iloc[n] == '1':
-        image2 = mnist.data.iloc[n]
-    
-# to numpyy
-image = image.to_numpy().reshape(28, 28)
-image2 = image2.to_numpy().reshape(28, 28)
-# Binarize the image
-binarized_image = ImageUser.binarize_image(image, threshold=128)
-# Find coordinates where pixels are equal to 1
-binarized_image2 = ImageUser.binarize_image(image2, threshold=128)
-print(MathTool.hausdorff_distance(binarized_image, binarized_image2))
+end_time_hausdorff = time.time()
 
-
-# Plot the original and binarized images
-plt.figure(figsize=(8, 4))
-plt.subplot(1, 2, 1)
-plt.imshow(binarized_image, cmap='gray')
-plt.title('binarized_image')
-plt.axis('off')
-plt.subplot(1, 2, 2)
-plt.imshow(binarized_image2, cmap='gray')
-plt.title('binarized_image2')
-plt.axis('off') 
-plt.suptitle('Hausdorff Distance: {}'.format(MathTool.hausdorff_distance(binarized_image, binarized_image2)))
-plt.show()
+print(f"Execution time for hausdorff_sum: {end_time_hausdorff - start_time_hausdorff} seconds")
