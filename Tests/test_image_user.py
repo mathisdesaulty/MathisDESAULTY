@@ -17,12 +17,16 @@ class TestImageUser(unittest.TestCase):
 
     def setUp(self):
         """
-        Method executed before each test.
+        Set up the test environment before each test.
+        This method is called before every individual test case.
         """
 
     def test_binarize_image_correct_output(self):
         """
-        Test that binarize_image produces the expected output for specific data.
+        Test that binarize_image produces the expected output for a given image and threshold.
+
+        This test checks if the binarize_image method correctly binarizes an image
+        when a specific threshold is provided.
         """
         image = np.array([[100, 150], [200, 50]])
         expected_output = [[False, True], [True, False]]
@@ -31,7 +35,10 @@ class TestImageUser(unittest.TestCase):
 
     def test_binarize_image_default_threshold(self):
         """
-        Test that binarize_image correctly uses the default threshold.
+        Test that binarize_image correctly uses the default threshold of 128.
+
+        This test verifies that the binarize_image method uses the default threshold
+        value of 128 when no threshold is explicitly provided.
         """
         image = np.array([[100, 150], [200, 50]])
         expected_output = [[False, True], [True, False]]
@@ -40,7 +47,12 @@ class TestImageUser(unittest.TestCase):
 
     def test_binarize_image_edge_cases(self):
         """
-        Test edge cases for binarize_image.
+        Test edge cases for the binarize_image method.
+
+        This test covers various edge cases including:
+        - An empty image.
+        - An image with all pixels above the threshold.
+        - An image with all pixels below the threshold.
         """
         # Empty image
         image = np.array([[]])
