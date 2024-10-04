@@ -183,39 +183,6 @@ class MathTool:
         return sum_distance  # Sum of both directions
 
     @staticmethod
-    def sum_distance_one_way(coords1, coords2, image1, image2, neighbors_offset):
-        """
-        Calculates the sum of distances between two sets of coordinates.
-
-        Parameters:
-        - coords1 (list of tuples): Coordinates from the first image.
-        - coords2 (list of tuples): Coordinates from the second image.
-        - image1 (list of lists): The first image.
-        - image2 (list of lists): The second image.
-        - neighbors_offset (list of tuples): List of neighbor offsets.
-
-        Returns:
-        - float: The calculated sum of distances.
-        """
-        if not coords1 or not coords2:
-            return float('inf')
-        total_distance = 0
-        for point1 in coords1:
-            min_dist = float('inf')
-            if image2[point1[0]][point1[1]] == 1:
-                min_dist = 0
-            else:
-                neighbors = MathTool.neighbors_positive(point1, image1, image2, neighbors_offset)
-                if neighbors[0]:
-                    min_dist = (neighbors[1][0] ** 2 + neighbors[1][1] ** 2) ** 0.5
-                else:
-                    for point2 in coords2:
-                        squared_diff = sum((a - b) ** 2 for a, b in zip(point1, point2))
-                        min_dist = min(min_dist, squared_diff ** 0.5)
-            total_distance += min_dist
-        return total_distance
-
-    @staticmethod
     def distance_d6(image1, image2, neighbors_offset) -> float:
         """
         Calculates the distance between two images using the d6 metric.
@@ -236,7 +203,7 @@ class MathTool:
             (i, j) for i in range(len(image2)) for j in range(len(image2[0])) if image2[i][j] == 1]
         if len(points1) == 0 or len(points2) == 0:
             return float('inf')
-        distance = MathTool.sum_distance_one_way(points1, points2, image1, image2, neighbors_offset)
+        distance = MathTool.calculate_sum_of_distances(points1, points2, image1, image2, neighbors_offset)
         return distance / len(points1)
 
     @staticmethod

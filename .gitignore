@@ -1,2 +1,4 @@
 # Exclude __pycache__ directory
 __pycache__/
+.coverage
+coverage.xml

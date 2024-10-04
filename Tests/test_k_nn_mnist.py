@@ -27,7 +27,7 @@ class TestKNNClassifierMINST(unittest.TestCase):
             self.assertIn(prediction, range(10), "Each prediction should be in the range 0-9.")
 
     def test_predict_hausdorff_sum(self):
-        """Test the predict method using the Hausdorff sum distance 
+        """Test the predict method using the Hausdorff sum distance
         metric with a small subset of the data (first 10 images)."""
         test_images = self.knn.images[:10]
         predictions = self.knn.predict(test_images, distance_metric='hausdorff_sum')
@@ -44,9 +44,9 @@ class TestKNNClassifierMINST(unittest.TestCase):
         self.assertGreaterEqual(success_rate, 0, "The success rate should be at least 0.")
         self.assertLessEqual(success_rate, 1, "The success rate should be at most 1.")
         self.assertEqual(total_predictions, 10, "The total number of predictions should be 10.")
-        self.assertGreaterEqual(correct_predictions, 0, 
+        self.assertGreaterEqual(correct_predictions, 0,
                                 "The number of correct predictions should be at least 0.")
-        self.assertLessEqual(correct_predictions, 10, 
+        self.assertLessEqual(correct_predictions, 10,
                              "The number of correct predictions should be at most 10.")
 
     def test_performance_method_hausdorff_sum(self):
@@ -58,9 +58,57 @@ class TestKNNClassifierMINST(unittest.TestCase):
         self.assertGreaterEqual(success_rate, 0, "The success rate should be at least 0.")
         self.assertLessEqual(success_rate, 1, "The success rate should be at most 1.")
         self.assertEqual(total_predictions, 10, "The total number of predictions should be 10.")
-        self.assertGreaterEqual(correct_predictions, 0, 
+        self.assertGreaterEqual(correct_predictions, 0,
                                 "The number of correct predictions should be at least 0.")
-        self.assertLessEqual(correct_predictions, 10, 
+        self.assertLessEqual(correct_predictions, 10,
+                             "The number of correct predictions should be at most 10.")
+
+    def test_predict_d22(self):
+        """Test the predict method using the d22 distance metric 
+        with a small subset of the data (first 10 images)."""
+        test_images = self.knn.images[:10]
+        predictions = self.knn.predict(test_images, distance_metric='d22')
+        self.assertEqual(len(predictions), 10, "The number of predictions should be 10.")
+        # Check if predictions are within the valid range of labels (0-9)
+        for prediction in predictions:
+            self.assertIn(prediction, range(10), "Each prediction should be in the range 0-9.")
+
+    def test_predict_d23(self):
+        """Test the predict method using the d23 distance metric 
+        with a small subset of the data (first 10 images)."""
+        test_images = self.knn.images[:10]
+        predictions = self.knn.predict(test_images, distance_metric='d23')
+        self.assertEqual(len(predictions), 10, "The number of predictions should be 10.")
+        # Check if predictions are within the valid range of labels (0-9)
+        for prediction in predictions:
+            self.assertIn(prediction, range(10), "Each prediction should be in the range 0-9.")
+
+    def test_performance_method_d22(self):
+        """Test the performance method using the d22 distance metric 
+        with a small number of tests (10)."""
+        result = self.knn.performance(num_tests=10, distance_metric='d22')
+        self.assertIsNotNone(result, "The performance method should not return None.")
+        success_rate, (correct_predictions, total_predictions) = result
+        self.assertGreaterEqual(success_rate, 0, "The success rate should be at least 0.")
+        self.assertLessEqual(success_rate, 1, "The success rate should be at most 1.")
+        self.assertEqual(total_predictions, 10, "The total number of predictions should be 10.")
+        self.assertGreaterEqual(correct_predictions, 0,
+                                "The number of correct predictions should be at least 0.")
+        self.assertLessEqual(correct_predictions, 10,
+                             "The number of correct predictions should be at most 10.")
+
+    def test_performance_method_d23(self):
+        """Test the performance method using the d23 distance metric 
+        with a small number of tests (10)."""
+        result = self.knn.performance(num_tests=10, distance_metric='d23')
+        self.assertIsNotNone(result, "The performance method should not return None.")
+        success_rate, (correct_predictions, total_predictions) = result
+        self.assertGreaterEqual(success_rate, 0, "The success rate should be at least 0.")
+        self.assertLessEqual(success_rate, 1, "The success rate should be at most 1.")
+        self.assertEqual(total_predictions, 10, "The total number of predictions should be 10.")
+        self.assertGreaterEqual(correct_predictions, 0,
+                                "The number of correct predictions should be at least 0.")
+        self.assertLessEqual(correct_predictions, 10,
                              "The number of correct predictions should be at most 10.")
 
 if __name__ == '__main__':
