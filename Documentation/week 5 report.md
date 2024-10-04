@@ -26,6 +26,7 @@ La deuxième observation était le fait que les images sont faites de 28 par 28 
 ### Distance D22/23
 
 Maintenant que j'ai un algorithme qui marche, je veux alors me pencher sur quel est la meilleur distances que je pourrais utiliser. J'ai alors mis en place cette semaine les distance D22 et D23, mais aussi la distance D6 (obligatoire pour faire ces deux distances). Vous pouvez trouver ces distances dans cette [article](https://www.researchgate.net/publication/290011464_Modifications_of_hausdorff_distance_for_object_matching). Vous pouvez revenir [there](https://github.com/mathisdesaulty/MathisDESAULTY/blob/a31945060205931cf925a90a1cedf2749448470a/Documentation/week%205%20report.md#L7) ou j'explique rapidement ce que sont ces distances sans rentrer dans les détails.
+J'ai alors pu faire des tests pour savoir quels étaient les meilleurs distances. Les distances D22 et D23 se rapproche de la distance de Hausdorff avec la somme, les résultats sont quasiment les même mais un peu plus long et performant pour ce qui est des distances d22 et d23. 
 
 ### Peer Review 
 L'un des travaux de cette semaines a aussi été de faire une peer review d'une personnes. Le travail se concentré surtout sur la lecture du code et sur ce qui était bien mais aussi ce qui était a améliorer dans le code. 
@@ -36,4 +37,4 @@ Cette semaine à surtout permis de régler des problèmes, pour le moment je n'e
 
 ## What's next ?    
 
-La prochaine étape est de tester les distance D22 et D23 en les adaptans dans la class K-NN et de faire pour les dernières semaines une interface utilisateur.
+La prochaine étape sera de faire une interface utilisateur. Mon optique serait de faire une interface tkinter ou la personne pourrait déssiner un nombre et l'algorithme pourra essayer de le prédire.

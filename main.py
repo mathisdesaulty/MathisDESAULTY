@@ -1,12 +1,11 @@
 from Object.k_nn_mnist import KNNClassifierMINST
 import time
 
-tests_number = 50
-size = 300
+tests_number = 1
+size = 70000
+k = 5
 
-knn = KNNClassifierMINST(5, size)
-
-
+knn = KNNClassifierMINST(k, size)
 
 print(f"size of the dataset: {str(len(knn.images))} images for {knn.k} nearest neighbors.")
 
