@@ -29,7 +29,9 @@ Now that I've got an algorithm that works, I want to look at the best distances 
 I was then able to do some tests to find out which distances were the best. Distances D22 and D23 are close to the Hausdorff distance with the sum, the results are almost the same but a little longer and more efficient for distances d22 and d23. 
 
 ### Peer Review 
+
 One of the tasks this week was to do a peer review of one person's work. The work focused mainly on reading the code and looking at what was good but also what needed to be improved in the code. 
+
 ## Issues
 
 This week has mainly been about sorting things out, so for the moment I don't have any other problems.
