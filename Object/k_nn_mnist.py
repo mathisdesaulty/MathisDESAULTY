@@ -21,7 +21,7 @@ class KNNClassifierMINST:
         data = fetch_openml('mnist_784', version=1)
         raw_images = data['data'][:size]
         self.images = [
-            ImageUser.binarize_image(image.reshape(28,28)) for image in raw_images.to_numpy()
+            ImageUser.binarize_image(image.reshape(28, 28)) for image in raw_images.to_numpy()
         ]
         self.labels = data['target'][:size].astype(int).tolist()
         self.k = k
@@ -36,8 +36,7 @@ class KNNClassifierMINST:
         predictions = [self._predict(xi, distance_metric) for xi in x]
         return predictions
 
-    def _predict(
-        self, x, distance_metric, neighbors_offset = None):
+    def _predict(self, x, distance_metric, neighbors_offset=None):
         """
         Predicts the class label for a single data point.
         :param x: Data point to classify.
@@ -54,16 +53,15 @@ class KNNClassifierMINST:
             ]
         elif distance_metric == 'hausdorff_sum':
             distances = [
-                MathTool.hausdorff_distance_sum(
-                    x, x_train, neighbors_offset) for x_train in self.images
+                MathTool.hausdorff_distance_sum(x, x_train, neighbors_offset) for x_train in self.images
             ]
         elif distance_metric == 'd22':
             distances = [
-                MathTool.distance_d22(x, x_train,neighbors_offset) for x_train in self.images
+                MathTool.distance_d22(x, x_train, neighbors_offset) for x_train in self.images
             ]
         elif distance_metric == 'd23':
             distances = [
-            MathTool.distance_d23(x, x_train, neighbors_offset) for x_train in self.images
+                MathTool.distance_d23(x, x_train, neighbors_offset) for x_train in self.images
             ]
         else:
             raise ValueError("Unsupported distance metric")
@@ -76,9 +74,60 @@ class KNNClassifierMINST:
         most_common = Counter(k_nearest_labels).most_common(1)
         return most_common[0][0]
 
+    def predict_return_neighbors(self, x, distance_metric='hausdorff', neighbors_offset=None):
+        """
+        Predicts the class labels for the provided data 
+        and returns the indices of the k nearest neighbors.
+        :param x: Data to classify.
+        :param distance_metric: Distance metric to use ('hausdorff' or 'hausdorff_sum').
+        :return: Predicted class labels and indices of the k nearest neighbors.
+        """
+        predictions = [
+            self._predict_return_neighbors(xi, distance_metric, neighbors_offset) for xi in x
+        ]
+        return predictions
+
+    def _predict_return_neighbors(self, x, distance_metric, neighbors_offset=None):
+        """
+        Predicts the class label for a single data point 
+        and returns the indices of the k nearest neighbors.
+        :param x: Data point to classify.
+        :param distance_metric: Distance metric to use ('hausdorff' or 'hausdorff_sum').
+        :param neighbors_offset: Precomputed neighbors offsets for Hausdorff distance.
+        :return: Predicted class label and indices of the k nearest neighbors.
+        """
+        # Compute distances between x and all points in the training set
+        if neighbors_offset is None:
+            neighbors_offset = MathTool.generate_neighbors_offsets(4)
+        if distance_metric == 'hausdorff':
+            distances = [
+                MathTool.hausdorff_distance(x, x_train, neighbors_offset) for x_train in self.images
+            ]
+        elif distance_metric == 'hausdorff_sum':
+            distances = [
+                MathTool.hausdorff_distance_sum(x, x_train, neighbors_offset) for x_train in self.images
+            ]
+        elif distance_metric == 'd22':
+            distances = [
+                MathTool.distance_d22(x, x_train, neighbors_offset) for x_train in self.images
+            ]
+        elif distance_metric == 'd23':
+            distances = [
+                MathTool.distance_d23(x, x_train, neighbors_offset) for x_train in self.images
+            ]
+        else:
+            raise ValueError("Unsupported distance metric")
+
+        # Get the labels of the k nearest neighbors
+        k_indices = sorted(range(len(distances)), key=lambda i: distances[i])[:self.k]
+        k_nearest_labels = [self.labels[i] for i in k_indices]
+
+        # Return the most common class label and the indices of the k nearest neighbors
+        most_common = Counter(k_nearest_labels).most_common(1)
+        return most_common[0][0], k_indices
+
     def _predict_with_custom_data(
-        self, x, images, labels, distance_metric, 
-        neighbors_offset = None):
+        self, x, images, labels, distance_metric, neighbors_offset=None):
         """
         Predicts the class label for a single data point using a custom dataset.
         :param x: Data point to classify.
@@ -93,16 +142,20 @@ class KNNClassifierMINST:
             neighbors_offset = MathTool.generate_neighbors_offsets(4)
         if distance_metric == 'hausdorff':
             distances = [
-                MathTool.hausdorff_distance(x, x_train, neighbors_offset) for x_train in images]
+                MathTool.hausdorff_distance(x, x_train, neighbors_offset) for x_train in images
+            ]
         elif distance_metric == 'hausdorff_sum':
             distances = [
-                MathTool.hausdorff_distance_sum(x, x_train, neighbors_offset) for x_train in images]
+                MathTool.hausdorff_distance_sum(x, x_train, neighbors_offset) for x_train in images
+            ]
         elif distance_metric == 'd22':
             distances = [
-            MathTool.distance_d22(x, x_train, neighbors_offset) for x_train in images]
+                MathTool.distance_d22(x, x_train, neighbors_offset) for x_train in images
+            ]
         elif distance_metric == 'd23':
             distances = [
-            MathTool.distance_d23(x, x_train, neighbors_offset) for x_train in images]
+                MathTool.distance_d23(x, x_train, neighbors_offset) for x_train in images
+            ]
         else:
             raise ValueError("Unsupported distance metric")
 
