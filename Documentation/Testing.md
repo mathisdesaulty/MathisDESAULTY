@@ -10,23 +10,17 @@ All tests tend to have 100% coverage of the entire class they are testing (In pr
 
 ## Coverage of the 07/10/24
 
-| Name                           | Stmts | Miss | Cover |
-|--------------------------------|-------|------|-------|
-| Notebooks\__init__.py         |   0   |  0   | 100%  |
-| Object\__init__.py            |   0   |  0   | 100%  |
-| Object\draw_interface.py       |  63   |  0   | 100%  |
-| Object\image_user.py           |  12   |  0   | 100%  |
-| Object\k_nn_mnist.py          |  78   |  8   |  90%  |
-| Object\math_tool.py           |  92   |  0   | 100%  |ù
-
-| Tests\__init__.py             |   0   |  0   | 100%  |
-| Tests\test_draw_interface.py   |  41   |  1   |  98%  |
-| Tests\test_image_user.py       |  30   |  1   |  97%  |
-| Tests\test_k_nn_mnist.py      |  71   |  1   |  99%  |
-| Tests\test_math_tool.py        | 197   |  1   |  99%  |
-|--------------------------------|-------|------|-------|
-| **TOTAL**                      | **584** | **12** | **98%** |
-
-
-
-(Coverage display in progress)
+| Nom                              | Stmts | Miss | Cover |
+|-----------------------------------|-------|------|-------|
+| Notebooks\__init__.py             | 0     | 0    | 100%  |
+| Object\__init__.py                | 0     | 0    | 100%  |
+| Object\draw_interface.py          | 99    | 0    | 100%  |
+| Object\image_user.py              | 12    | 0    | 100%  |
+| Object\k_nn_mnist.py              | 78    | 0    | 100%  |
+| Object\math_tool.py               | 92    | 0    | 100%  |
+| Tests\__init__.py                 | 0     | 0    | 100%  |
+| Tests\test_draw_interface.py      | 55    | 1    | 98%   |
+| Tests\test_image_user.py          | 30    | 1    | 97%   |
+| Tests\test_k_nn_mnist.py          | 154   | 33   | 79%   |
+| Tests\test_math_tool.py           | 229   | 1    | 99%   |
+| **TOTAL**                         | 749   | 36   | 95%   |

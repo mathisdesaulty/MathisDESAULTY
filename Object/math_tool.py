@@ -137,7 +137,7 @@ class MathTool:
         total_distance = 0
         for point1 in coords1:
             min_dist = float('inf')
-            if image2[point1[0]][point1[1]] is True:
+            if image2[point1[0]][point1[1]] == True:
                 min_dist = 0
             else:
                 neighbors = MathTool.neighbors_positive(point1, image1, image2, neighbors_offset)

@@ -118,8 +118,8 @@ class DrawInterface:
 
     def run_performance_tests(self):
         """Run performance tests and display the results."""
-        tests_number = 20
-        size = 2000
+        tests_number = 1
+        size = 10
         k = 5
 
         knn = KNNClassifierMINST(k, size)
@@ -131,23 +131,19 @@ class DrawInterface:
         performance = knn.performance(tests_number)
         end_time = time.time()
         results.append(f"Default metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
-
         # Performance with hausdorff_sum metric
         start_time = time.time()
         performance = knn.performance(tests_number, "hausdorff_sum")
         end_time = time.time()
         results.append(f"Hausdorff_sum metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
-
         # Performance with d22 metric
         start_time = time.time()
         performance = knn.performance(tests_number, "d22")
         end_time = time.time()
         results.append(f"D22 metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
-
         # Performance with d23 metric
         start_time = time.time()
         performance = knn.performance(tests_number, "d23")
         end_time = time.time()
         results.append(f"D23 metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
-
         messagebox.showinfo("Performance Results", "\n".join(results))

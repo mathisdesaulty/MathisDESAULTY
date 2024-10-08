@@ -110,6 +110,87 @@ class TestKNNClassifierMINST(unittest.TestCase):
                                 "The number of correct predictions should be at least 0.")
         self.assertLessEqual(correct_predictions, 10,
                              "The number of correct predictions should be at most 10.")
+    def test_predict_invalid_metric(self):
+        """Test the predict method with an invalid distance metric."""
+        test_images = self.knn.images[:10]
+        with self.assertRaises(ValueError, msg="Unsupported distance metric"):
+            self.knn.predict(test_images, distance_metric='invalid_metric')
+    def test_performance_invalid_metric(self):
+        """Test the predict method with an invalid distance metric."""
+        with self.assertRaises(ValueError, msg="Unsupported distance metric"):
+            self.knn.performance(1, distance_metric='invalid_metric')
+    def test_predict_return_neighbors(self):
+        """Test the predict_return_neighbors method 
+        with a small subset of the data (first 10 images)."""
+        test_images = self.knn.images[:10]
+        predictions = self.knn.predict_return_neighbors(test_images)
+        self.assertEqual(len(predictions), 10, "The number of predictions should be 10.")
+        for prediction, neighbors in predictions:
+            self.assertIn(prediction, range(10), "Each prediction should be in the range 0-9.")
+            self.assertEqual(len(neighbors), 3, "The number of neighbors should be 3.")
+            for neighbor in neighbors:
+                self.assertIn(neighbor, range(100),
+                              "Each neighbor index should be in the range 0-99.")
+
+    def test_predict_return_neighbors_hausdorff_sum(self):
+        """Test the predict_return_neighbors method 
+        using the Hausdorff sum distance metric 
+        with a small subset of the data (first 10 images)."""
+        test_images = self.knn.images[:10]
+        predictions = self.knn.predict_return_neighbors(
+            test_images, distance_metric='hausdorff_sum')
+        self.assertEqual(len(predictions), 10, "The number of predictions should be 10.")
+        for prediction, neighbors in predictions:
+            self.assertIn(prediction, range(10), "Each prediction should be in the range 0-9.")
+            self.assertEqual(len(neighbors), 3, "The number of neighbors should be 3.")
+            for neighbor in neighbors:
+                self.assertIn(
+                    neighbor, range(100), "Each neighbor index should be in the range 0-99.")
+
+    def test_predict_return_neighbors_d22(self):
+        """Test the predict_return_neighbors method using the d22 distance metric
+        with a small subset of the data (first 10 images)."""
+        test_images = self.knn.images[:10]
+        predictions = self.knn.predict_return_neighbors(test_images, distance_metric='d22')
+        self.assertEqual(len(predictions), 10, "The number of predictions should be 10.")
+        for prediction, neighbors in predictions:
+            self.assertIn(prediction, range(10), "Each prediction should be in the range 0-9.")
+            self.assertEqual(len(neighbors), 3, "The number of neighbors should be 3.")
+            for neighbor in neighbors:
+                self.assertIn(
+                    neighbor, range(100), "Each neighbor index should be in the range 0-99.")
+
+    def test_predict_return_neighbors_d23(self):
+        """Test the predict_return_neighbors method using the d23 distance metric
+        with a small subset of the data (first 10 images)."""
+        test_images = self.knn.images[:10]
+        predictions = self.knn.predict_return_neighbors(test_images, distance_metric='d23')
+        self.assertEqual(len(predictions), 10, "The number of predictions should be 10.")
+        for prediction, neighbors in predictions:
+            self.assertIn(prediction, range(10), "Each prediction should be in the range 0-9.")
+            self.assertEqual(len(neighbors), 3, "The number of neighbors should be 3.")
+            for neighbor in neighbors:
+                self.assertIn(
+                    neighbor, range(100), "Each neighbor index should be in the range 0-99.")
+
+    def test_predict_return_neighbors_default(self):
+        """Test the predict_return_neighbors method
+        with a small subset of the data (first 10 images)."""
+        test_images = self.knn.images[:10]
+        predictions = self.knn.predict_return_neighbors(test_images)
+        self.assertEqual(len(predictions), 10, "The number of predictions should be 10.")
+        for prediction, neighbors in predictions:
+            self.assertIn(prediction, range(10), "Each prediction should be in the range 0-9.")
+            self.assertEqual(len(neighbors), 3, "The number of neighbors should be 3.")
+            for neighbor in neighbors:
+                self.assertIn(
+                    neighbor, range(100), "Each neighbor index should be in the range 0-99.")
+
+    def test_predict_return_neighbors_invalid_metric(self):
+        """Test the predict_return_neighbors method with an invalid distance metric."""
+        test_images = self.knn.images[:10]
+        with self.assertRaises(ValueError, msg="Unsupported distance metric"):
+            self.knn.predict_return_neighbors(test_images, distance_metric='invalid_metric')
 
 if __name__ == '__main__':
     unittest.main()
