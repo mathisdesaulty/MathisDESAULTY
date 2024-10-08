@@ -95,6 +95,30 @@ class TestDrawInterface(unittest.TestCase):
         # Vérifier que le canvas a bien dessiné une ligne
         self.assertEqual(self.app.old_x, 100)
         self.assertEqual(self.app.old_y, 150)
+    def test_run_performance_tests(self):
+        """Test the run_performance_tests method to ensure it runs without errors."""
+        # Mock the messagebox to prevent actual messagebox from appearing during tests
+        self.app.run_performance_tests()
+    def test_reset_canvas(self):
+        """Test the reset_canvas method to ensure it clears the canvas."""
+        # Simulate drawing on the canvas
+        self.app.old_x = 100
+        self.app.old_y = 100
+        event_mock = tk.Event()
+        event_mock.x = 150
+        event_mock.y = 150
+        self.app.paint(event_mock)
+
+        # Ensure the canvas has drawn content
+        self.assertNotEqual(self.app.canvas.find_all(), ())
+
+        # Call the reset_canvas method
+        self.app.reset_canvas()
+
+        # Ensure the canvas is cleared
+        self.assertEqual(self.app.canvas.find_all(), ())
+        self.assertIsNone(self.app.old_x)
+        self.assertIsNone(self.app.old_y)
 
 if __name__ == '__main__':
     unittest.main()

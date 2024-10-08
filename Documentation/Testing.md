@@ -17,7 +17,8 @@ All tests tend to have 100% coverage of the entire class they are testing (In pr
 | Object\draw_interface.py       |  63   |  0   | 100%  |
 | Object\image_user.py           |  12   |  0   | 100%  |
 | Object\k_nn_mnist.py          |  78   |  8   |  90%  |
-| Object\math_tool.py           |  92   |  0   | 100%  |
+| Object\math_tool.py           |  92   |  0   | 100%  |ù
+
 | Tests\__init__.py             |   0   |  0   | 100%  |
 | Tests\test_draw_interface.py   |  41   |  1   |  98%  |
 | Tests\test_image_user.py       |  30   |  1   |  97%  |

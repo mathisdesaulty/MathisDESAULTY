@@ -1,42 +1,43 @@
-"""
-This module provides a graphical interface for drawing 
-and recognizing digits using a K-Nearest Neighbors (KNN) classifier.
-Classes:
-    DrawInterface: A class that creates a drawing interface using Tkinter 
-    and processes the drawn image to predict digits using a KNN classifier.
-Methods:
-    __init__(self, root):
-        Initializes the drawing interface with a Tkinter root window.
-    save_image(self):
-        Saves the drawn image, preprocesses it, and predicts the digit using the KNN classifier. 
-        Displays the drawn image and its nearest neighbors.
-    center_image_in_black_background(self, img):
-        Centers the drawn image in a black background to match the MNIST format.
-    paint(self, event):
-        Draws on the canvas when the mouse is dragged.
-"""
-
 import tkinter as tk
+from tkinter import messagebox
 from PIL import Image, ImageOps, ImageGrab
 import numpy as np
 import matplotlib.pyplot as plt
 from Object.k_nn_mnist import KNNClassifierMINST
 from Object.image_user import ImageUser
-
+import time
 
 class DrawInterface:
     """Interface for drawing and recognizing digits using KNN classifier."""    
     def __init__(self, root):
         """Initialize the drawing interface."""
         self.root = root
-        self.root.title("Interface de Dessin")
+        self.root.title("Drawing Interface")
+        
+        # Configure grid layout
+        self.root.grid_rowconfigure(0, weight=1)
+        self.root.grid_columnconfigure(0, weight=1)
+        
+        # Create canvas for drawing
         self.canvas = tk.Canvas(self.root, bg="white", width=500, height=500)
-        self.canvas.pack()
+        self.canvas.grid(row=0, column=0, padx=10, pady=10, columnspan=3)
         self.canvas.bind("<B1-Motion>", self.paint)
-        self.save_button = tk.Button(self.root, text="Sauvegarder", command=self.save_image)
-        self.save_button.pack()
+        
+        # Create buttons
+        self.save_button = tk.Button(self.root, text="Save Image", command=self.save_image)
+        self.save_button.grid(row=1, column=0, padx=10, pady=10, sticky="ew")
+        
+        self.test_button = tk.Button(self.root, text="Run Performance Tests", command=self.run_performance_tests)
+        self.test_button.grid(row=1, column=1, padx=10, pady=10, sticky="ew")
+        
+        self.reset_button = tk.Button(self.root, text="Reset", command=self.reset_canvas)
+        self.reset_button.grid(row=1, column=2, padx=10, pady=10, sticky="ew")
+        
+        # Initialize drawing variables
         self.old_x = None
         self.old_y = None
+        
+        # Initialize KNN classifier
         self.knn = KNNClassifierMINST(k=5, size=2000)
 
     def save_image(self):
@@ -72,7 +73,7 @@ class DrawInterface:
             axes[i + 1].imshow(neighbor_image, cmap='gray')
             axes[i + 1].set_title(f"Neighbor {i+1}")
             axes[i + 1].axis('off')
-
+        messagebox.showinfo("Prediction", f"Predicted digit: {predictions[0][0]}")
         plt.show()
 
     def center_image_in_black_background(self, img):
@@ -108,3 +109,45 @@ class DrawInterface:
                                     smooth=tk.TRUE)
         self.old_x = event.x
         self.old_y = event.y
+
+    def reset_canvas(self):
+        """Clear the canvas."""
+        self.canvas.delete("all")
+        self.old_x = None
+        self.old_y = None
+
+    def run_performance_tests(self):
+        """Run performance tests and display the results."""
+        tests_number = 20
+        size = 2000
+        k = 5
+
+        knn = KNNClassifierMINST(k, size)
+
+        results = []
+
+        # Performance with default metric
+        start_time = time.time()
+        performance = knn.performance(tests_number)
+        end_time = time.time()
+        results.append(f"Default metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
+
+        # Performance with hausdorff_sum metric
+        start_time = time.time()
+        performance = knn.performance(tests_number, "hausdorff_sum")
+        end_time = time.time()
+        results.append(f"Hausdorff_sum metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
+
+        # Performance with d22 metric
+        start_time = time.time()
+        performance = knn.performance(tests_number, "d22")
+        end_time = time.time()
+        results.append(f"D22 metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
+
+        # Performance with d23 metric
+        start_time = time.time()
+        performance = knn.performance(tests_number, "d23")
+        end_time = time.time()
+        results.append(f"D23 metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
+
+        messagebox.showinfo("Performance Results", "\n".join(results))
