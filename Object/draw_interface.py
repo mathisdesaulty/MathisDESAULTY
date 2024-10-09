@@ -38,7 +38,7 @@ class DrawInterface:
         self.old_y = None
         
         # Initialize KNN classifier
-        self.knn = KNNClassifierMINST(k=5, size=2000)
+        self.knn = KNNClassifierMINST(k=5, size=10000)
 
     def save_image(self):
         """Save the drawn image, preprocess it, and predict using KNN classifier."""
@@ -118,8 +118,8 @@ class DrawInterface:
 
     def run_performance_tests(self):
         """Run performance tests and display the results."""
-        tests_number = 1
-        size = 10
+        tests_number = 10
+        size = 1000
         k = 5
 
         knn = KNNClassifierMINST(k, size)
