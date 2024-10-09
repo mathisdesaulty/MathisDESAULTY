@@ -26,7 +26,10 @@ class MathTool:
 
         # Sort the offsets by distance from the origin (0, 0), farthest to nearest
         neighbors_offset.sort(key=lambda offset: (offset[0] ** 2 + offset[1] ** 2), reverse=False)
-        return neighbors_offset
+        dico = {}
+        for i in range(len(neighbors_offset)):
+            dico[neighbors_offset[i]] = (neighbors_offset[i][0]**2 + neighbors_offset[i][1]**2)**0.5
+        return dico
 
     @staticmethod
     def neighbors_positive(coords1, image1, image2, neighbors_offset):
@@ -45,14 +48,14 @@ class MathTool:
         """
         find = False
         x1, y1 = coords1
-        for x, y in neighbors_offset:
+        for x, y in neighbors_offset.keys():
             x2, y2 = x1 + x, y1 + y
             if (0 <= x2 < len(image2)
                 and 0 <= y2 < len(image2[0])
                 and image1[x1][y1] == 1 and image2[x2][y2] == 1):
                 find = True
-                return (find, (x, y))
-        return (find, (0, 0))
+                return (find, neighbors_offset[(x, y)])
+        return (find, 0)
 
     @staticmethod
     def calculate_one_way_distance(coords1, coords2, image1, image2, neighbors_offset) -> float:
@@ -78,7 +81,7 @@ class MathTool:
             else:
                 neighbors = MathTool.neighbors_positive(point1, image1, image2, neighbors_offset)
                 if neighbors[0]:
-                    min_dist = neighbors[1][0] ** 2 + neighbors[1][1] ** 2
+                    min_dist = neighbors[1]
                 else:
                     for point2 in coords2:
                         squared_diff = sum((a - b) ** 2 for a, b in zip(point1, point2))
@@ -142,7 +145,7 @@ class MathTool:
             else:
                 neighbors = MathTool.neighbors_positive(point1, image1, image2, neighbors_offset)
                 if neighbors[0]:
-                    min_dist = (neighbors[1][0] ** 2 + neighbors[1][1] ** 2) ** 0.5
+                    min_dist = neighbors[1]
                 else:
                     for point2 in coords2:
                         squared_diff = sum((a - b) ** 2 for a, b in zip(point1, point2))

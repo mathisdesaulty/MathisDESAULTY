@@ -190,23 +190,23 @@ class TestMathTool(unittest.TestCase):
         image1 = [[1, 0], [0, 1]]
         image2 = [[0, 1], [1, 0]]
         coords1 = (0, 0)
-        expected_output = (True, (0, 1))
+        expected_output = (True, 1.0)
         self.assertEqual(
             MathTool.neighbors_positive(coords1, image1, image2, neighbors_offset), expected_output)
         coords1 = (1, 1)
-        expected_output = (True, (-1, 0))
+        expected_output = (True, 1.0)
         self.assertEqual(
             MathTool.neighbors_positive(coords1, image1, image2, neighbors_offset), expected_output)
         image1 = [[1, 0, 0], [0, 0, 0], [0, 0, 0]]
         image2 = [[0, 0, 0], [0, 0, 0], [0, 0, 1]]
         coords1 = (0, 0)
-        expected_output = (True, (2, 2))
+        expected_output = (True, 8**0.5 )
         self.assertEqual(
             MathTool.neighbors_positive(coords1, image1, image2, neighbors_offset), expected_output)
         image1 = [[1, 0, 0], [0, 0, 0], [0, 0, 0]]
         image2 = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
         coords1 = (0, 0)
-        expected_output = (False, (0, 0))
+        expected_output = (False, 0.0)
         self.assertEqual(
             MathTool.neighbors_positive(coords1, image1, image2, neighbors_offset), expected_output)
 
@@ -220,13 +220,15 @@ class TestMathTool(unittest.TestCase):
                            (0, -1), (0, 0), (0, 1),
                            (1, -1), (1, 0), (1, 1)]
         expected_output.sort(key=lambda offset: (offset[0]**2 + offset[1]**2), reverse=False)
-
+        dico = {}
+        for i in expected_output:
+            dico[i] = (i[0]**2 + i[1]**2)**0.5
         result = MathTool.generate_neighbors_offsets(n)
-        self.assertEqual(result, expected_output)
+        self.assertEqual(result, dico)
 
         # Test with n = 0
         n = 0
-        expected_output = [(0, 0)]
+        expected_output = {(0, 0): 0.0}
         result = MathTool.generate_neighbors_offsets(n)
         self.assertEqual(result, expected_output)
 
@@ -238,8 +240,11 @@ class TestMathTool(unittest.TestCase):
                            (1, -2), (1, -1), (1, 0), (1, 1), (1, 2),
                            (2, -2), (2, -1), (2, 0), (2, 1), (2, 2)]
         expected_output.sort(key=lambda offset: (offset[0]**2 + offset[1]**2), reverse=False)
+        dico = {}
+        for i in expected_output:
+            dico[i] = (i[0]**2 + i[1]**2)**0.5
         result = MathTool.generate_neighbors_offsets(n)
-        self.assertEqual(result, expected_output)
+        self.assertEqual(result, dico)
 
     def test_distance_d6_correct_output(self):
         """
