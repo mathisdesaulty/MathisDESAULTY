@@ -3,7 +3,7 @@ from tkinter import messagebox
 from PIL import Image, ImageOps, ImageGrab
 import numpy as np
 import matplotlib.pyplot as plt
-from Object.k_nn_mnist import KNNClassifierMINST
+from Object.k_nn_mnist import KNNClassifierMNIST
 from Object.image_user import ImageUser
 import time
 
@@ -38,7 +38,7 @@ class DrawInterface:
         self.old_y = None
         
         # Initialize KNN classifier
-        self.knn = KNNClassifierMINST(k=5, size=10000)
+        self.knn = KNNClassifierMNIST(k=5, size=10000)
 
     def save_image(self):
         """Save the drawn image, preprocess it, and predict using KNN classifier."""
@@ -122,7 +122,7 @@ class DrawInterface:
         size = 1000
         k = 5
 
-        knn = KNNClassifierMINST(k, size)
+        knn = KNNClassifierMNIST(k, size)
 
         results = []
 

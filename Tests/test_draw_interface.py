@@ -21,7 +21,7 @@ import unittest
 import tkinter as tk
 import numpy as np
 from PIL import Image
-from Object.draw_interface import DrawInterface  # Assurez-vous que le chemin est correct
+from Object.draw_interface import DrawInterface  # Import the DrawInterface class
 
 class TestDrawInterface(unittest.TestCase):
     """

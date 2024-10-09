@@ -2,14 +2,14 @@
 Unit tests for the KNNClassifierMINST class.
 """
 import unittest
-from Object.k_nn_mnist import KNNClassifierMINST
+from Object.k_nn_mnist import KNNClassifierMNIST
 
 class TestKNNClassifierMINST(unittest.TestCase):
     """Unit tests for the KNNClassifierMINST class."""
 
     def setUp(self):
         """Set up the KNN classifier with k=3 and a smaller dataset size for testing."""
-        self.knn = KNNClassifierMINST(k=3, size=100)
+        self.knn = KNNClassifierMNIST(k=3, size=100)
 
     def test_initialization(self):
         """Test if the classifier initializes correctly with the given parameters."""

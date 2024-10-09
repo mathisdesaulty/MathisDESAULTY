@@ -1,4 +1,4 @@
-from Object.k_nn_mnist import KNNClassifierMINST
+from Object.k_nn_mnist import KNNClassifierMNIST
 import tkinter as tk
 from Object.draw_interface import DrawInterface
 
