@@ -53,7 +53,8 @@ class KNNClassifierMNIST:
             ]
         elif distance_metric == 'hausdorff_sum':
             distances = [
-                MathTool.hausdorff_distance_sum(x, x_train, neighbors_offset) for x_train in self.images
+                MathTool.hausdorff_distance_sum(x, x_train, neighbors_offset)
+                for x_train in self.images
             ]
         elif distance_metric == 'd22':
             distances = [
@@ -69,7 +70,6 @@ class KNNClassifierMNIST:
         # Get the labels of the k nearest neighbors
         k_indices = sorted(range(len(distances)), key=lambda i: distances[i])[:self.k]
         k_nearest_labels = [self.labels[i] for i in k_indices]
-
         # Return the most common class label
         most_common = Counter(k_nearest_labels).most_common(1)
         return most_common[0][0]
@@ -105,7 +105,8 @@ class KNNClassifierMNIST:
             ]
         elif distance_metric == 'hausdorff_sum':
             distances = [
-                MathTool.hausdorff_distance_sum(x, x_train, neighbors_offset) for x_train in self.images
+                MathTool.hausdorff_distance_sum(x, x_train, neighbors_offset)
+                for x_train in self.images
             ]
         elif distance_metric == 'd22':
             distances = [

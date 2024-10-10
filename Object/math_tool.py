@@ -27,8 +27,8 @@ class MathTool:
         # Sort the offsets by distance from the origin (0, 0), farthest to nearest
         neighbors_offset.sort(key=lambda offset: (offset[0] ** 2 + offset[1] ** 2), reverse=False)
         dico = {}
-        for i in range(len(neighbors_offset)):
-            dico[neighbors_offset[i]] = (neighbors_offset[i][0]**2 + neighbors_offset[i][1]**2)**0.5
+        for i, offset in enumerate(neighbors_offset):
+            dico[offset] = (offset[0]**2 + offset[1]**2)**0.5
         return dico
 
     @staticmethod
@@ -116,7 +116,7 @@ class MathTool:
         distance1 = MathTool.calculate_one_way_distance(
             coords1, coords2, image1, image2, neighbors_offset)
         distance2 = MathTool.calculate_one_way_distance(
-            coords1=coords2, coords2=coords1, image1=image2, 
+            coords1=coords2, coords2=coords1, image1=image2,
             image2=image1, neighbors_offset=neighbors_offset)
         return max(distance1, distance2)  # Maximum of both directions
 
@@ -140,7 +140,7 @@ class MathTool:
         total_distance = 0
         for point1 in coords1:
             min_dist = float('inf')
-            if image2[point1[0]][point1[1]] == True:
+            if image2[point1[0]][point1[1]] == 1:
                 min_dist = 0
             else:
                 neighbors = MathTool.neighbors_positive(point1, image1, image2, neighbors_offset)
@@ -181,7 +181,7 @@ class MathTool:
         sum_distance = MathTool.calculate_sum_of_distances(
             coords1, coords2, image1, image2, neighbors_offset)
         sum_distance += MathTool.calculate_sum_of_distances(
-            coords1=coords2, coords2=coords1, image1=image2,image2=image1, 
+            coords1=coords2, coords2=coords1, image1=image2,image2=image1,
             neighbors_offset=neighbors_offset)
         return sum_distance  # Sum of both directions
 
@@ -206,7 +206,8 @@ class MathTool:
             (i, j) for i in range(len(image2)) for j in range(len(image2[0])) if image2[i][j] == 1]
         if len(points1) == 0 or len(points2) == 0:
             return float('inf')
-        distance = MathTool.calculate_sum_of_distances(points1, points2, image1, image2, neighbors_offset)
+        distance = MathTool.calculate_sum_of_distances(
+            points1, points2, image1, image2, neighbors_offset)
         return distance / len(points1)
 
     @staticmethod
@@ -240,7 +241,7 @@ class MathTool:
         Returns:
         - float: The calculated d23 distance.
         """
-        
+
         distance1 = MathTool.distance_d6(image1, image2, neighbors_offset)
         distance2 = MathTool.distance_d6(
             image1=image2, image2=image1, neighbors_offset=neighbors_offset)
