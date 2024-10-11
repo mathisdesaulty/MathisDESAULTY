@@ -3,3 +3,4 @@ coverage.xml
 
 # Exclude __pycache__ directory
 __pycache__/
+.vscode/
