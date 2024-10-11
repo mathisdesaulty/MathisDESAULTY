@@ -6,12 +6,12 @@
 |-----------------------------------|-------|------|-------|
 | Notebooks\__init__.py             | 0     | 0    | 100%  |
 | Object\__init__.py                | 0     | 0    | 100%  |
-| Object\draw_interface.py          | 99    | 0    | 100%  |
+| Object\draw_interface.py          | 99    | 84   | 15%   |
 | Object\image_user.py              | 12    | 0    | 100%  |
 | Object\k_nn_mnist.py              | 78    | 0    | 100%  |
 | Object\math_tool.py               | 92    | 0    | 100%  |
 | Tests\__init__.py                 | 0     | 0    | 100%  |
-| Tests\test_draw_interface.py      | 55    | 1    | 98%   |
+| Tests\test_draw_interface.py      | 8     | 1    | 88%   |
 | Tests\test_image_user.py          | 30    | 1    | 97%   |
 | Tests\test_k_nn_mnist.py          | 154   | 33   | 79%   |
 | Tests\test_math_tool.py           | 229   | 1    | 99%   |
@@ -65,19 +65,9 @@ How it was tested:
     - Values (number of tests, number of images in the dataset, etc.)
 
 ### For DrawInterface: [TestDrawInterface](https://github.com/mathisdesaulty/MathisDESAULTY/blob/26b980f816e4efc3112cbd38b05f855895a09a7c/Tests/test_draw_interface.py#L26) 
-- What was tested: How the user interface works.
-How it was tested:
-    - TestDrawInterface ensures that all GUI-related functions execute correctly and that visual elements are displayed as expected.
-    - These are manual tests, as the interface elements must be visually checked by an operator while they are being executed.
-- Types of tests:
-    - Functional testing
-    - User interface testing
-    - Integration testing
-    - Lifecycle testing
-- Inputs:
-    - Mouse coordinates
-    - Scanned images
-    - Events
+
+This part is in the file because i don't think these tests are really usefull and takes too long to test.
+
 
 ## How can the tests be repeated?
 
