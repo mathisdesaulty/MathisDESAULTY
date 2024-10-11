@@ -27,7 +27,7 @@ This project involves using the K-NN algorithm to predict number images from the
     python main.py
     ```
 2. Run the performance test:
-        ```bash
+    ```bash
     python performance_test.py
     ```
 
