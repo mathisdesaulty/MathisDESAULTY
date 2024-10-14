@@ -90,7 +90,7 @@ class MathTool:
         return max_min_dist
 
     @staticmethod
-    def hausdorff_distance(image1, image2, neighbors_offset) -> float:
+    def hausdorff_distance(image1, image2, coords1,coords2,neighbors_offset) -> float:
         """
         Calculates the Hausdorff distance between two images.
 
@@ -107,11 +107,6 @@ class MathTool:
             return 0
         if len(image1) != len(image2) or len(image1[0]) != len(image2[0]):
             return float('inf')
-        # Get coordinates of True (or 1) values in the images
-        coords1 = [
-            (i, j) for i in range(len(image1)) for j in range(len(image1[0])) if image1[i][j] == 1]
-        coords2 = [
-            (i, j) for i in range(len(image2)) for j in range(len(image2[0])) if image2[i][j] == 1]
         # Calculate Hausdorff distance in both directions
         distance1 = MathTool.calculate_one_way_distance(
             coords1, coords2, image1, image2, neighbors_offset)
@@ -140,7 +135,8 @@ class MathTool:
         total_distance = 0
         for point1 in coords1:
             min_dist = float('inf')
-            if image2[point1[0]][point1[1]] == 1:
+            # print(len(image2[0]),point1[1],len(image2),point1[0])
+            if len(image2[0])<point1[1] and len(image2)<point1[0] and image2[point1[0]][point1[1]] == 1:
                 min_dist = 0
             else:
                 neighbors = MathTool.neighbors_positive(point1, image1, image2, neighbors_offset)
@@ -155,7 +151,7 @@ class MathTool:
         return total_distance
 
     @staticmethod
-    def hausdorff_distance_sum(image1, image2, neighbors_offset) -> float:
+    def hausdorff_distance_sum(image1, image2,coords1,coords2, neighbors_offset) -> float:
         """
         Calculates the sum of Hausdorff distances (using Euclidean distance) between two images.
 
@@ -172,11 +168,6 @@ class MathTool:
             return 0
         if len(image1) != len(image2) or len(image1[0]) != len(image2[0]):
             return float('inf')
-        # Get coordinates of True (or 1) values in the images
-        coords1 = [
-            (i, j) for i in range(len(image1)) for j in range(len(image1[0])) if image1[i][j] == 1]
-        coords2 = [
-            (i, j) for i in range(len(image2)) for j in range(len(image2[0])) if image2[i][j] == 1]
         # Calculate the sum of Hausdorff distances in both directions
         sum_distance = MathTool.calculate_sum_of_distances(
             coords1, coords2, image1, image2, neighbors_offset)
@@ -186,7 +177,7 @@ class MathTool:
         return sum_distance  # Sum of both directions
 
     @staticmethod
-    def distance_d6(image1, image2, neighbors_offset) -> float:
+    def distance_d6(image1, image2, points1, points2, neighbors_offset) -> float:
         """
         Calculates the distance between two images using the d6 metric.
 
@@ -198,20 +189,20 @@ class MathTool:
         Returns:
         - float: The calculated d6 distance.
         """
-        if not image1 or not image2 or image1 == image2:
-            return 0
-        points1 = [
-            (i, j) for i in range(len(image1)) for j in range(len(image1[0])) if image1[i][j] == 1]
-        points2 = [
-            (i, j) for i in range(len(image2)) for j in range(len(image2[0])) if image2[i][j] == 1]
+        # Check for empty images or empty sets of points
+        if not image1 or not image2 or not any(image1) or not any(image2) or image1 == image2:
+            return 0 if image1 == image2 else float('inf')
+
         if len(points1) == 0 or len(points2) == 0:
             return float('inf')
+
         distance = MathTool.calculate_sum_of_distances(
             points1, points2, image1, image2, neighbors_offset)
         return distance / len(points1)
 
+
     @staticmethod
-    def distance_d22(image1, image2, neighbors_offset):
+    def distance_d22(image1, image2,points1,points2, neighbors_offset):
         """
         Calculates the distance between two images using the d22 metric.
 
@@ -223,13 +214,16 @@ class MathTool:
         Returns:
         - float: The calculated d22 distance.
         """
-        distance1 = MathTool.distance_d6(image1, image2, neighbors_offset)
+        distance1 = MathTool.distance_d6(image1, image2,points1,points2,neighbors_offset)
         distance2 = MathTool.distance_d6(
-            image1=image2, image2=image1, neighbors_offset=neighbors_offset)
+            image1=image2, image2=image1,
+            points1=points2,
+            points2=points1,
+            neighbors_offset=neighbors_offset)
         return max(distance1, distance2)
 
     @staticmethod
-    def distance_d23(image1, image2, neighbors_offset):
+    def distance_d23(image1, image2,points1,points2, neighbors_offset):
         """
         Calculates the distance between two images using the d23 metric.
 
@@ -242,7 +236,10 @@ class MathTool:
         - float: The calculated d23 distance.
         """
 
-        distance1 = MathTool.distance_d6(image1, image2, neighbors_offset)
+        distance1 = MathTool.distance_d6(image1, image2,points1,points2, neighbors_offset)
         distance2 = MathTool.distance_d6(
-            image1=image2, image2=image1, neighbors_offset=neighbors_offset)
+            image1=image2, image2=image1,
+            points1=points2,
+            points2=points1,
+            neighbors_offset=neighbors_offset)
         return (distance1 + distance2) / 2

@@ -68,8 +68,10 @@ class TestMathTool(unittest.TestCase):
         neighbors_offset = MathTool.generate_neighbors_offsets(4)
         image1 = [[1, 0], [0, 1]]
         image2 = [[0, 1], [1, 0]]
+        points1 = [[0, 0], [1, 1]]
+        points2 = [[1, 0], [0, 1]]
         expected_output = 1  # Maximum distance between non-matching points
-        result = MathTool.hausdorff_distance(image1, image2, neighbors_offset)
+        result = MathTool.hausdorff_distance(image1, image2,points1,points2,neighbors_offset)
         self.assertAlmostEqual(result, expected_output, places=6)
 
     def test_hausdorff_distance_edge_cases(self):
@@ -80,22 +82,28 @@ class TestMathTool(unittest.TestCase):
         # Both images are empty
         image1 = [[]]
         image2 = [[]]
+        points1 = [[]]
+        points2 = [[]]
         expected_output = 0
-        result = MathTool.hausdorff_distance(image1, image2, neighbors_offset)
+        result = MathTool.hausdorff_distance(image1, image2,points1,points2, neighbors_offset)
         self.assertEqual(result, expected_output)
 
         # One image is empty
         image1 = [[1, 1], [1, 1]]
         image2 = [[]]
+        points1 = [[0, 0], [1, 1], [0, 1], [1, 0]]
+        points2 = [[]]  # Empty image
         expected_output = float('inf')
-        result = MathTool.hausdorff_distance(image1, image2, neighbors_offset)
+        result = MathTool.hausdorff_distance(image1, image2,points1,points2, neighbors_offset)
         self.assertEqual(result, expected_output)
 
         # Identical images
         image1 = [[1, 1], [1, 1]]
         image2 = [[1, 1], [1, 1]]
+        points1 = [[0, 0], [1, 1], [0, 1], [1, 0]]
+        points2 = [[0, 0], [1, 1], [0, 1], [1, 0]]
         expected_output = 0
-        result = MathTool.hausdorff_distance(image1, image2, neighbors_offset)
+        result = MathTool.hausdorff_distance(image1, image2, points1,points2,neighbors_offset)
         self.assertEqual(result, expected_output)
 
     def test_calculate_sum_of_distances_correct_output(self):
@@ -152,8 +160,10 @@ class TestMathTool(unittest.TestCase):
         neighbors_offset = MathTool.generate_neighbors_offsets(4)
         image1 = [[1, 0], [0, 1]]
         image2 = [[0, 1], [1, 0]]
+        points1 = [[0, 0], [1, 1]]
+        points2 = [[1, 0], [0, 1]]
         expected_output = 4  # Sum of minimum distances
-        result = MathTool.hausdorff_distance_sum(image1, image2, neighbors_offset)
+        result = MathTool.hausdorff_distance_sum(image1, image2,points1,points2, neighbors_offset)
         self.assertAlmostEqual(result, expected_output, places=6)
 
     def test_hausdorff_distance_sum_edge_cases(self):
@@ -164,22 +174,28 @@ class TestMathTool(unittest.TestCase):
         # Both images are empty
         image1 = [[]]
         image2 = [[]]
+        points1 = [[]]
+        points2 = [[]]
         expected_output = 0
-        result = MathTool.hausdorff_distance_sum(image1, image2, neighbors_offset)
+        result = MathTool.hausdorff_distance_sum(image1, image2,points1,points2, neighbors_offset)
         self.assertEqual(result, expected_output)
 
         # One image is empty
         image1 = [[1, 1], [1, 1]]
         image2 = [[]]
+        points1 = [[0, 0], [1, 1], [0, 1], [1, 0]]
+        points2 = [[]]
         expected_output = float('inf')
-        result = MathTool.hausdorff_distance_sum(image1, image2, neighbors_offset)
+        result = MathTool.hausdorff_distance_sum(image1, image2,points1,points2,neighbors_offset)
         self.assertEqual(result, expected_output)
 
         # Identical images
         image1 = [[1, 1], [1, 1]]
         image2 = [[1, 1], [1, 1]]
+        points1 = [[0, 0], [1, 1], [0, 1], [1, 0]]
+        points2 = [[0, 0], [1, 1], [0, 1], [1, 0]]
         expected_output = 0
-        result = MathTool.hausdorff_distance_sum(image1, image2, neighbors_offset)
+        result = MathTool.hausdorff_distance_sum(image1, image2,points1,points2, neighbors_offset)
         self.assertEqual(result, expected_output)
 
     def test_neighbors_positive(self):
@@ -253,8 +269,10 @@ class TestMathTool(unittest.TestCase):
         neighbors_offset = MathTool.generate_neighbors_offsets(4)
         image1 = [[1, 0], [0, 1]]
         image2 = [[0, 1], [1, 0]]
+        points1 = [[0, 0], [1, 1]]
+        points2 = [[1, 0], [0, 1]]
         expected_output = 1  # Average minimum distance
-        result = MathTool.distance_d6(image1, image2, neighbors_offset)
+        result = MathTool.distance_d6(image1, image2, points1, points2, neighbors_offset)
         self.assertAlmostEqual(result, expected_output, places=6)
 
     def test_distance_d6_edge_cases(self):
@@ -265,22 +283,28 @@ class TestMathTool(unittest.TestCase):
         # Both images are empty
         image1 = [[]]
         image2 = [[]]
+        points1 = [[]]
+        points2 = [[]]
         expected_output = 0
-        result = MathTool.distance_d6(image1, image2, neighbors_offset)
+        result = MathTool.distance_d6(image1, image2, points1, points2, neighbors_offset)
         self.assertEqual(result, expected_output)
 
         # One image is empty
         image1 = [[1, 1], [1, 1]]
         image2 = [[]]
+        points1 = [[i, j] for i in range(len(image1)) for j in range(len(image1[0])) if image1[i][j] == 1]
+        points2 = [[]]
         expected_output = float('inf')
-        result = MathTool.distance_d6(image1, image2, neighbors_offset)
+        result = MathTool.distance_d6(image1,image2,points1,points2,neighbors_offset)
         self.assertEqual(result, expected_output)
 
         # Identical images
         image1 = [[1, 1], [1, 1]]
         image2 = [[1, 1], [1, 1]]
+        points1 = [[0, 0], [1, 1], [0, 1], [1, 0]]
+        points2 = [[0, 0], [1, 1], [0, 1], [1, 0]]
         expected_output = 0
-        result = MathTool.distance_d6(image1, image2, neighbors_offset)
+        result = MathTool.distance_d6(image1, image2, points1, points2, neighbors_offset)
         self.assertEqual(result, expected_output)
 
     def test_distance_d22_correct_output(self):
@@ -290,8 +314,10 @@ class TestMathTool(unittest.TestCase):
         neighbors_offset = MathTool.generate_neighbors_offsets(4)
         image1 = [[1, 0], [0, 1]]
         image2 = [[0, 1], [1, 0]]
+        points1 = [[0, 0], [1, 1]]
+        points2 = [[1, 0], [0, 1]]
         expected_output = 1  # Maximum of average minimum distances
-        result = MathTool.distance_d22(image1, image2, neighbors_offset)
+        result = MathTool.distance_d22(image1, image2, points1, points2, neighbors_offset)
         self.assertAlmostEqual(result, expected_output, places=6)
 
     def test_distance_d22_edge_cases(self):
@@ -302,22 +328,28 @@ class TestMathTool(unittest.TestCase):
         # Both images are empty
         image1 = [[]]
         image2 = [[]]
+        points1 = [[]]
+        points2 = [[]]
         expected_output = 0
-        result = MathTool.distance_d22(image1, image2, neighbors_offset)
+        result = MathTool.distance_d22(image1, image2, points1, points2, neighbors_offset)
         self.assertEqual(result, expected_output)
 
         # One image is empty
         image1 = [[1, 1], [1, 1]]
         image2 = [[]]
+        points1 = [[i, j] for i in range(len(image1)) for j in range(len(image1[0])) if image1[i][j] == 1]
+        points2 = [[]]
         expected_output = float('inf')
-        result = MathTool.distance_d22(image1, image2, neighbors_offset)
+        result = MathTool.distance_d22(image1, image2, points1, points2, neighbors_offset)
         self.assertEqual(result, expected_output)
 
         # Identical images
         image1 = [[1, 1], [1, 1]]
         image2 = [[1, 1], [1, 1]]
+        points1 = [[0, 0], [1, 1], [0, 1], [1, 0]]
+        points2 = [[0, 0], [1, 1], [0, 1], [1, 0]]
         expected_output = 0
-        result = MathTool.distance_d22(image1, image2, neighbors_offset)
+        result = MathTool.distance_d22(image1, image2, points1, points2, neighbors_offset)
         self.assertEqual(result, expected_output)
 
     def test_distance_d23_correct_output(self):
@@ -327,8 +359,10 @@ class TestMathTool(unittest.TestCase):
         neighbors_offset = MathTool.generate_neighbors_offsets(4)
         image1 = [[1, 0], [0, 1]]
         image2 = [[0, 1], [1, 0]]
+        points1 = [[0, 0], [1, 1]]
+        points2 = [[1, 0], [0, 1]]
         expected_output = 1  # Average of average minimum distances
-        result = MathTool.distance_d23(image1, image2, neighbors_offset)
+        result = MathTool.distance_d23(image1, image2, points1, points2, neighbors_offset)
         self.assertAlmostEqual(result, expected_output, places=6)
 
     def test_distance_d23_edge_cases(self):
@@ -339,22 +373,28 @@ class TestMathTool(unittest.TestCase):
         # Both images are empty
         image1 = [[]]
         image2 = [[]]
+        points1 = [[]] 
+        points2 = [[]]
         expected_output = 0
-        result = MathTool.distance_d23(image1, image2, neighbors_offset)
+        result = MathTool.distance_d23(image1, image2, points1, points2, neighbors_offset)
         self.assertEqual(result, expected_output)
 
         # One image is empty
         image1 = [[1, 1], [1, 1]]
         image2 = [[]]
+        points1 = [[0, 0], [1, 1], [0, 1], [1, 0]]
+        points2 = [[]]
         expected_output = float('inf')
-        result = MathTool.distance_d23(image1, image2, neighbors_offset)
+        result = MathTool.distance_d23(image1, image2, points1, points2, neighbors_offset)
         self.assertEqual(result, expected_output)
 
         # Identical images
         image1 = [[1, 1], [1, 1]]
         image2 = [[1, 1], [1, 1]]
+        points1 = [[0, 0], [1, 1], [0, 1], [1, 0]]
+        points2 = [[0, 0], [1, 1], [0, 1], [1, 0]]
         expected_output = 0
-        result = MathTool.distance_d23(image1, image2, neighbors_offset)
+        result = MathTool.distance_d23(image1, image2, points1, points2, neighbors_offset)
         self.assertEqual(result, expected_output)
 
 if __name__ == '__main__':

@@ -48,22 +48,29 @@ class KNNClassifierMNIST:
         if neighbors_offset is None:
             neighbors_offset = MathTool.generate_neighbors_offsets(4)
         if distance_metric == 'hausdorff':
-            distances = [
-                MathTool.hausdorff_distance(x, x_train, neighbors_offset) for x_train in self.images
-            ]
+            distances = []
+            for x_train in self.images:
+                coords1 = [[i, j] for i in range(len(x)) for j in range(len(x[0])) if x[i][j] == 1]
+                coords2 = [[i, j] for i in range(len(x_train)) for j in range(len(x_train[0])) if x_train[i][j] == 1]
+                distances.append(MathTool.hausdorff_distance(x, x_train,coords1,coords2,neighbors_offset))
         elif distance_metric == 'hausdorff_sum':
-            distances = [
-                MathTool.hausdorff_distance_sum(x, x_train, neighbors_offset)
-                for x_train in self.images
-            ]
+            distances = []
+            for x_train in self.images:
+                coords1 = [[i, j] for i in range(len(x)) for j in range(len(x[0])) if x[i][j] == 1]
+                coords2 = [[i, j] for i in range(len(x_train)) for j in range(len(x_train[0])) if x_train[i][j] == 1]
+                distances.append(MathTool.hausdorff_distance_sum(x, x_train,coords1, coords2, neighbors_offset))
         elif distance_metric == 'd22':
-            distances = [
-                MathTool.distance_d22(x, x_train, neighbors_offset) for x_train in self.images
-            ]
+            distances = []
+            for x_train in self.images:
+                coords1 = [[i, j] for i in range(len(x)) for j in range(len(x[0])) if x[i][j] == 1]
+                coords2 = [[i, j] for i in range(len(x_train)) for j in range(len(x_train[0])) if x_train[i][j] == 1]
+                distances.append(MathTool.distance_d22(x, x_train,coords1, coords2, neighbors_offset))
         elif distance_metric == 'd23':
-            distances = [
-                MathTool.distance_d23(x, x_train, neighbors_offset) for x_train in self.images
-            ]
+            distances = []
+            for x_train in self.images:
+                coords1 = [[i, j] for i in range(len(x)) for j in range(len(x[0])) if x[i][j] == 1]
+                coords2 = [[i, j] for i in range(len(x_train)) for j in range(len(x_train[0])) if x_train[i][j] == 1]
+                distances.append(MathTool.distance_d23(x, x_train,coords1, coords2, neighbors_offset))
         else:
             raise ValueError("Unsupported distance metric")
 
@@ -100,22 +107,29 @@ class KNNClassifierMNIST:
         if neighbors_offset is None:
             neighbors_offset = MathTool.generate_neighbors_offsets(4)
         if distance_metric == 'hausdorff':
-            distances = [
-                MathTool.hausdorff_distance(x, x_train, neighbors_offset) for x_train in self.images
-            ]
+            distances = []
+            for x_train in self.images:
+                coords1 = [[i, j] for i in range(len(x)) for j in range(len(x[0])) if x[i][j] == 1]
+                coords2 = [[i, j] for i in range(len(x_train)) for j in range(len(x_train[0])) if x_train[i][j] == 1]
+                distances.append(MathTool.hausdorff_distance(x, x_train,coords1,coords2,neighbors_offset))
         elif distance_metric == 'hausdorff_sum':
-            distances = [
-                MathTool.hausdorff_distance_sum(x, x_train, neighbors_offset)
-                for x_train in self.images
-            ]
+            distances = []
+            for x_train in self.images:
+                coords1 = [[i, j] for i in range(len(x)) for j in range(len(x[0])) if x[i][j] == 1]
+                coords2 = [[i, j] for i in range(len(x_train)) for j in range(len(x_train[0])) if x_train[i][j] == 1]
+                distances.append(MathTool.hausdorff_distance_sum(x, x_train,coords1, coords2, neighbors_offset))
         elif distance_metric == 'd22':
-            distances = [
-                MathTool.distance_d22(x, x_train, neighbors_offset) for x_train in self.images
-            ]
+            distances = []
+            for x_train in self.images:
+                coords1 = [[i, j] for i in range(len(x)) for j in range(len(x[0])) if x[i][j] == 1]
+                coords2 = [[i, j] for i in range(len(x_train)) for j in range(len(x_train[0])) if x_train[i][j] == 1]
+                distances.append(MathTool.distance_d22(x, x_train,coords1, coords2, neighbors_offset))
         elif distance_metric == 'd23':
-            distances = [
-                MathTool.distance_d23(x, x_train, neighbors_offset) for x_train in self.images
-            ]
+            distances = []
+            for x_train in self.images:
+                coords1 = [[i, j] for i in range(len(x)) for j in range(len(x[0])) if x[i][j] == 1]
+                coords2 = [[i, j] for i in range(len(x_train)) for j in range(len(x_train[0])) if x_train[i][j] == 1]
+                distances.append(MathTool.distance_d23(x, x_train,coords1, coords2, neighbors_offset))
         else:
             raise ValueError("Unsupported distance metric")
 
@@ -142,21 +156,29 @@ class KNNClassifierMNIST:
         if neighbors_offset is None:
             neighbors_offset = MathTool.generate_neighbors_offsets(4)
         if distance_metric == 'hausdorff':
-            distances = [
-                MathTool.hausdorff_distance(x, x_train, neighbors_offset) for x_train in images
-            ]
+            distances = []
+            for x_train in images:
+                coords1 = [[i, j] for i in range(len(x)) for j in range(len(x[0])) if x[i][j] == 1]
+                coords2 = [[i, j] for i in range(len(x_train)) for j in range(len(x_train[0])) if x_train[i][j] == 1]
+                distances.append(MathTool.hausdorff_distance(x, x_train,coords1,coords2,neighbors_offset))
         elif distance_metric == 'hausdorff_sum':
-            distances = [
-                MathTool.hausdorff_distance_sum(x, x_train, neighbors_offset) for x_train in images
-            ]
+            distances = []
+            for x_train in images:
+                coords1 = [[i, j] for i in range(len(x)) for j in range(len(x[0])) if x[i][j] == 1]
+                coords2 = [[i, j] for i in range(len(x_train)) for j in range(len(x_train[0])) if x_train[i][j] == 1]
+                distances.append(MathTool.hausdorff_distance_sum(x, x_train,coords1, coords2, neighbors_offset))
         elif distance_metric == 'd22':
-            distances = [
-                MathTool.distance_d22(x, x_train, neighbors_offset) for x_train in images
-            ]
+            distances = []
+            for x_train in images:
+                coords1 = [[i, j] for i in range(len(x)) for j in range(len(x[0])) if x[i][j] == 1]
+                coords2 = [[i, j] for i in range(len(x_train)) for j in range(len(x_train[0])) if x_train[i][j] == 1]
+                distances.append(MathTool.distance_d22(x, x_train,coords1, coords2, neighbors_offset))
         elif distance_metric == 'd23':
-            distances = [
-                MathTool.distance_d23(x, x_train, neighbors_offset) for x_train in images
-            ]
+            distances = []
+            for x_train in images:
+                coords1 = [[i, j] for i in range(len(x)) for j in range(len(x[0])) if x[i][j] == 1]
+                coords2 = [[i, j] for i in range(len(x_train)) for j in range(len(x_train[0])) if x_train[i][j] == 1]
+                distances.append(MathTool.distance_d23(x, x_train,coords1, coords2, neighbors_offset))
         else:
             raise ValueError("Unsupported distance metric")
 
