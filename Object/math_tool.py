@@ -52,7 +52,7 @@ class MathTool:
             x2, y2 = x1 + x, y1 + y
             if (0 <= x2 < len(image2)
                 and 0 <= y2 < len(image2[0])
-                and image1[x1][y1] == 1 and image2[x2][y2] == 1):
+                and image2[x2][y2] == 1):
                 find = True
                 return (find, neighbors_offset[(x, y)])
         return (find, 0)
@@ -84,7 +84,7 @@ class MathTool:
                     min_dist = neighbors[1]
                 else:
                     for point2 in coords2:
-                        squared_diff = sum((a - b) ** 2 for a, b in zip(point1, point2))
+                        squared_diff = (point1[0]-point2[0])* (point1[0]-point2[0]) + (point1[1]-point2[1])* (point1[1]-point2[1]) 
                         min_dist = min(min_dist, squared_diff)
             max_min_dist = max(max_min_dist, min_dist)
         return max_min_dist
@@ -144,9 +144,9 @@ class MathTool:
                     min_dist = neighbors[1]
                 else:
                     for point2 in coords2:
-                        squared_diff = sum((a - b) ** 2 for a, b in zip(point1, point2))
-                        euclidean_dist = squared_diff ** 0.5  # Euclidean distance with square root
-                        min_dist = min(min_dist, euclidean_dist)
+                        squared_diff = (point1[0]-point2[0])* (point1[0]-point2[0]) + (point1[1]-point2[1])* (point1[1]-point2[1]) 
+                        min_dist = min(min_dist, squared_diff)
+            min_dist = min_dist **0.5
             total_distance += min_dist
         return total_distance
 
