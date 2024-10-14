@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 from Object.k_nn_mnist import KNNClassifierMNIST
 from Object.image_user import ImageUser
 import time
+import threading
+import tkinter.ttk as ttk
 
 class DrawInterface:
     """Interface for drawing and recognizing digits using KNN classifier."""    
@@ -18,20 +20,24 @@ class DrawInterface:
         self.root.grid_rowconfigure(0, weight=1)
         self.root.grid_columnconfigure(0, weight=1)
         
+        # Create label
+        self.label = tk.Label(self.root, text="Write your number to predict!")
+        self.label.grid(row=0, column=0, padx=10, pady=10, columnspan=3)
+        
         # Create canvas for drawing
         self.canvas = tk.Canvas(self.root, bg="white", width=500, height=500)
-        self.canvas.grid(row=0, column=0, padx=10, pady=10, columnspan=3)
+        self.canvas.grid(row=1, column=0, padx=10, pady=10, columnspan=3)
         self.canvas.bind("<B1-Motion>", self.paint)
         
         # Create buttons
-        self.save_button = tk.Button(self.root, text="Save Image", command=self.save_image)
-        self.save_button.grid(row=1, column=0, padx=10, pady=10, sticky="ew")
+        self.save_button = tk.Button(self.root, text="Predict number", command=self.save_image)
+        self.save_button.grid(row=2, column=0, padx=10, pady=10, sticky="ew")
         
         self.test_button = tk.Button(self.root, text="Run Performance Tests", command=self.run_performance_tests)
-        self.test_button.grid(row=1, column=1, padx=10, pady=10, sticky="ew")
+        self.test_button.grid(row=2, column=1, padx=10, pady=10, sticky="ew")
         
         self.reset_button = tk.Button(self.root, text="Reset", command=self.reset_canvas)
-        self.reset_button.grid(row=1, column=2, padx=10, pady=10, sticky="ew")
+        self.reset_button.grid(row=2, column=2, padx=10, pady=10, sticky="ew")
         
         # Initialize drawing variables
         self.old_x = None
@@ -60,21 +66,39 @@ class DrawInterface:
 
         binarized_image = np.array(pixel_matrix, dtype=np.uint8)
         binarized_image = ImageUser.binarize_image(binarized_image, threshold=40)
-        predictions = self.knn.predict_return_neighbors([binarized_image], "hausdorff_sum")
-        neighbors = predictions[0][1]
+        
 
-        fig, axes = plt.subplots(1, self.knn.k + 1, figsize=(10, self.knn.k + 1))
-        axes[0].imshow(binarized_image, cmap='gray')
-        axes[0].set_title("Your Image")
-        axes[0].axis('off')
+        self.predict_with_progress(binarized_image)
+    
+    
+    def predict_with_progress(self,binarized_image):
+        """Predict the digit with a progress bar indication."""
+        progress = ttk.Progressbar(self.root, orient="horizontal", length=200, mode="indeterminate", style="TProgressbar")
+        style = ttk.Style(self.root)
+        style.configure("TProgressbar", troughcolor='white', background='blue')
+        progress.grid(row=3, column=0, columnspan=3, pady=10)
+        progress.start()
 
-        for i, neighbor_idx in enumerate(neighbors):
-            neighbor_image = self.knn.images[neighbor_idx]
-            axes[i + 1].imshow(neighbor_image, cmap='gray')
-            axes[i + 1].set_title(f"Neighbor {i+1}")
-            axes[i + 1].axis('off')
-        messagebox.showinfo("Prediction", f"Predicted digit: {predictions[0][0]}")
-        plt.show()
+        def task():
+            predictions = self.knn.predict_return_neighbors([binarized_image], "hausdorff_sum")
+            progress.stop()
+            progress.grid_forget()
+            neighbors = predictions[0][1]
+            
+            fig, axes = plt.subplots(1, self.knn.k + 1, figsize=(10, self.knn.k + 1))
+            axes[0].imshow(binarized_image, cmap='gray')
+            axes[0].set_title("Your Image")
+            axes[0].axis('off')
+
+            for i, neighbor_idx in enumerate(neighbors):
+                neighbor_image = self.knn.images[neighbor_idx]
+                axes[i + 1].imshow(neighbor_image, cmap='gray')
+                axes[i + 1].set_title(f"Neighbor {i+1}")
+                axes[i + 1].axis('off')
+            messagebox.showinfo("Prediction", f"Predicted digit: {predictions[0][0]}")
+            plt.show()
+
+        threading.Thread(target=task).start()
 
     def center_image_in_black_background(self, img):
         """Center the drawing in a black background to match MNIST format."""
