@@ -21,29 +21,26 @@ class TestMathTool(unittest.TestCase):
         neighbors_offset = MathTool.generate_neighbors_offsets(1)
         coords1 = [[0, 0], [1, 1]]
         coords2 = [[1, 0], [0, 1]]
-        image1 = [[1, 0], [0, 1]]
         image2 = [[0, 1], [1, 0]]
         expected_output = 1
         result = MathTool.calculate_one_way_distance(
-            coords1, coords2, image1, image2, neighbors_offset)
+            coords1, coords2, image2, neighbors_offset)
         self.assertAlmostEqual(result, expected_output, places=6)
         neighbors_offset = MathTool.generate_neighbors_offsets(1)
-        image1 = [[1, 0], [0, 0]]
         image2 = [[1, 0], [0, 0]]
         coords1 = [[0, 0]]
         coords2 = [[0, 0]]
         expected_output = 0
         result = MathTool.calculate_one_way_distance(
-            coords1, coords2, image1, image2, neighbors_offset)
+            coords1, coords2, image2, neighbors_offset)
         self.assertAlmostEqual(result, expected_output, places=6)
         neighbors_offset = MathTool.generate_neighbors_offsets(0)
-        image1 = [[1, 0], [0, 0]]
         image2 = [[0, 0], [0, 1]]
         coords1 = [[0, 0]]
         coords2 = [[1, 1]]
         expected_output = 2
         result = MathTool.calculate_one_way_distance(
-            coords1, coords2, image1, image2, neighbors_offset)
+            coords1, coords2, image2, neighbors_offset)
         self.assertAlmostEqual(result, expected_output, places=6)
 
     def test_calculate_one_way_distance_edge_cases(self):
@@ -54,11 +51,10 @@ class TestMathTool(unittest.TestCase):
         # Identical points
         coords1 = [[0, 0]]
         coords2 = [[0, 0]]
-        image1 = [[1, 0], [0, 1]]
         image2 = [[0, 1], [1, 0]]
         expected_output = 1
         result = MathTool.calculate_one_way_distance(
-            coords1, coords2, image1, image2, neighbors_offset)
+            coords1, coords2, image2, neighbors_offset)
         self.assertEqual(result, expected_output)
 
     def test_hausdorff_distance_correct_output(self):
@@ -113,29 +109,26 @@ class TestMathTool(unittest.TestCase):
         neighbors_offset = MathTool.generate_neighbors_offsets(4)
         coords1 = [[0, 0], [1, 1]]
         coords2 = [[1, 0], [0, 1]]
-        image1 = [[1, 0], [0, 1]]
         image2 = [[0, 1], [1, 0]]
         expected_output = 2  # Each point has a minimum distance of 1
         result = MathTool.calculate_sum_of_distances(
-            coords1, coords2, image1, image2, neighbors_offset)
+            coords1, coords2, image2, neighbors_offset)
         self.assertAlmostEqual(result, expected_output, places=6)
         neighbors_offset = MathTool.generate_neighbors_offsets(0)
         coords1 = [[0, 0], [1, 1]]
         coords2 = [[1, 0], [0, 1]]
-        image1 = [[1, 0], [0, 1]]
         image2 = [[0, 1], [1, 0]]
         expected_output = 2  # Each point has a minimum distance of 1
         result = MathTool.calculate_sum_of_distances(
-            coords1, coords2, image1, image2, neighbors_offset)
+            coords1, coords2, image2, neighbors_offset)
         self.assertAlmostEqual(result, expected_output, places=6)
         neighbors_offset = MathTool.generate_neighbors_offsets(0)
         coords1 = [[0, 0]]
         coords2 = [[0, 0]]
-        image1 = [[1, 0], [0, 0]]
         image2 = [[1, 0], [0, 0]]
         expected_output = 0
         result = MathTool.calculate_sum_of_distances(
-            coords1, coords2, image1, image2, neighbors_offset)
+            coords1, coords2, image2, neighbors_offset)
         self.assertAlmostEqual(result, expected_output, places=6)
 
     def test_calculate_sum_of_distances_edge_cases(self):
@@ -146,11 +139,10 @@ class TestMathTool(unittest.TestCase):
         # Identical points
         coords1 = [[0, 0]]
         coords2 = [[0, 0]]
-        image1 = [[1, 0], [0, 1]]
         image2 = [[0, 1], [1, 0]]
         expected_output = 1
         result = MathTool.calculate_sum_of_distances(
-            coords1, coords2, image1, image2, neighbors_offset)
+            coords1, coords2, image2, neighbors_offset)
         self.assertEqual(result, expected_output)
 
     def test_hausdorff_distance_sum_correct_output(self):
@@ -203,28 +195,25 @@ class TestMathTool(unittest.TestCase):
         Test the neighbors_positive method.
         """
         neighbors_offset = MathTool.generate_neighbors_offsets(4)
-        image1 = [[1, 0], [0, 1]]
         image2 = [[0, 1], [1, 0]]
         coords1 = (0, 0)
         expected_output = (True, 1.0)
         self.assertEqual(
-            MathTool.neighbors_positive(coords1, image1, image2, neighbors_offset), expected_output)
+            MathTool.neighbors_positive(coords1, image2, neighbors_offset), expected_output)
         coords1 = (1, 1)
         expected_output = (True, 1.0)
         self.assertEqual(
-            MathTool.neighbors_positive(coords1, image1, image2, neighbors_offset), expected_output)
-        image1 = [[1, 0, 0], [0, 0, 0], [0, 0, 0]]
+            MathTool.neighbors_positive(coords1, image2, neighbors_offset), expected_output)
         image2 = [[0, 0, 0], [0, 0, 0], [0, 0, 1]]
         coords1 = (0, 0)
         expected_output = (True, 8**0.5 )
         self.assertEqual(
-            MathTool.neighbors_positive(coords1, image1, image2, neighbors_offset), expected_output)
-        image1 = [[1, 0, 0], [0, 0, 0], [0, 0, 0]]
+            MathTool.neighbors_positive(coords1, image2, neighbors_offset), expected_output)
         image2 = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
         coords1 = (0, 0)
         expected_output = (False, 0.0)
         self.assertEqual(
-            MathTool.neighbors_positive(coords1, image1, image2, neighbors_offset), expected_output)
+            MathTool.neighbors_positive(coords1, image2, neighbors_offset), expected_output)
 
     def test_generate_neighbors_offsets(self):
         """
@@ -292,7 +281,8 @@ class TestMathTool(unittest.TestCase):
         # One image is empty
         image1 = [[1, 1], [1, 1]]
         image2 = [[]]
-        points1 = [[i, j] for i in range(len(image1)) for j in range(len(image1[0])) if image1[i][j] == 1]
+        points1 = [[i, j] for i in range(len(image1))
+                   for j in range(len(image1[0])) if image1[i][j] == 1]
         points2 = [[]]
         expected_output = float('inf')
         result = MathTool.distance_d6(image1,image2,points1,points2,neighbors_offset)
@@ -337,7 +327,8 @@ class TestMathTool(unittest.TestCase):
         # One image is empty
         image1 = [[1, 1], [1, 1]]
         image2 = [[]]
-        points1 = [[i, j] for i in range(len(image1)) for j in range(len(image1[0])) if image1[i][j] == 1]
+        points1 = [[i, j] for i in range(len(image1))
+                   for j in range(len(image1[0])) if image1[i][j] == 1]
         points2 = [[]]
         expected_output = float('inf')
         result = MathTool.distance_d22(image1, image2, points1, points2, neighbors_offset)
@@ -373,7 +364,7 @@ class TestMathTool(unittest.TestCase):
         # Both images are empty
         image1 = [[]]
         image2 = [[]]
-        points1 = [[]] 
+        points1 = [[]]
         points2 = [[]]
         expected_output = 0
         result = MathTool.distance_d23(image1, image2, points1, points2, neighbors_offset)
