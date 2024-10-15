@@ -36,6 +36,7 @@ After installation, you can start the application by running:
     ```bash
     python main.py
     ```
+    The main launch can sometimes take a little time.
 2. Run the performance test:
     ```bash
     python performance_test.py
@@ -43,8 +44,8 @@ After installation, you can start the application by running:
 
 
 ## Features
--**Image prediction**: (main.py) allows you to draw your number and have it predicted by the MNIST dataset.
--**Performance test**: (main.py) allows you to see the performance with k = 5, number of tests = 10, number of images in the dataset used = 1000.
+-**Image prediction**: (main.py) allows you to draw your number and have it predicted by the MNIST dataset. This programme takes some time because it compares the image with a MNIST dataset of 10,000 images.
+-**Performance test**: (main.py) allows you to see the performance with k = 5, number of tests = 10, number of images in the dataset used = 1000. This programme then takes about ten or fifteen seconds to test all the distances.
 -**Terminal Performance test**: (performance.py) allows you to run performance tests in the terminal with k, the number of tests and the size of the dataset chosen at runtime.
 -**K-NN class**: You can use this class for your own project, maximum optimisation has been done. If you want to use it, I leave you with the code [here](https://github.com/mathisdesaulty/MathisDESAULTY/blob/8b1f675fb66de66af5a47e26466f32d37e88b921/Object/k_nn_mnist.py#L10), all the docstrings are complete and allow you to understand the project.
 
