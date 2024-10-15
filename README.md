@@ -15,7 +15,7 @@ This project involves using the K-NN algorithm to predict number images from the
     ```bash
     cd AlgoAndAILab_MathisDESAULTY
     ```
-4. Create a virtual envirronement:
+3. Create a virtual envirronement:
     ```bash
     python3 -m venv yenv
     ```
