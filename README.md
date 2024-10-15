@@ -1,9 +1,9 @@
 # AlgoAndAILab_K-NN_MNIST
-Project for the "Algorithms and AI Lab" Course of the 1st period (2024-2025).*
+Project for the "Algorithms and AI Lab" Course of the 1st period (2024-2025).
 
 ## Description
 
-This project involves using the K-NN algorithm to predict number images from the MNIST dataset.
+This project allows you to use the MNIST dataset to predict images of numbers that you can draw yourself using the following information.
 
 ## Installation
 
@@ -35,6 +35,6 @@ This project involves using the K-NN algorithm to predict number images from the
     python performance_test.py
     ```
 
-## Next implementations
+## How does the programme work? 
 
-For the moment, this project only consists of a main that gives statistics on the execution time and performance of the current algorithm. The next step is to create a user interface that will allow users to really understand the usefulness of this algorithm.
+When you launch the main programme, you will see an image page appear in which you can draw your number so that the programme can try to predict it. You can see how the programme performs by looking at the performance test next to the prediction buttons. If you try to predict several times, you may be able to see that the performance tests are very optimistic. The problem is that the MNIST dataset may be very large, but most of the numbers are written the same. If you have a way of drawing the numbers that is a little outside the dataset, the predictions will be poor. 
