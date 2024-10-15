@@ -26,6 +26,12 @@ This project allows you to use the MNIST dataset to predict images of numbers th
 
 ## Usage
 
+You can run the main with the executable in:
+
+.\dist\main\main.exe
+
+Or with theses commands:
+
 1. Run the main script to start the prediction:
     ```bash
     python main.py
