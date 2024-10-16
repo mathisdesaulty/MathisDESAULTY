@@ -1,32 +1,78 @@
-# Research on distances
-This research allows me to know which distances to test and which might work best to get the most convincing results. 
-They are divided into two different types of distance, for greyscale images and for binarised images.
+# k-Nearest Neighbors (k-NN)
 
-## Binarised images
-* Hamming's distance: $$ d_H(A, B) = \sum_{i=1}^{n} |A_i - B_i|$$ 
-Faster than Haussdorff distance, simple for binarised images.
+The **k-Nearest Neighbors (k-NN)** algorithm is a simple, non-parametric method used for classification and regression tasks. In both cases, the idea is to find the \( k \) closest data points (neighbors) to a target point, based on a distance metric (commonly Euclidean distance). The algorithm then makes predictions based on the majority class (in classification) or the average value (in regression) of these neighbors.
 
-* Jaccard's distance:
-$$
-d_{Jaccard}(A, B) = 1 - \frac{|A \cap B|}{|A \cup B|}
-$$
-More expensive to calculate than Hamming distance, but provides a more robust measure of similarity.
+## How k-NN Works:
+1. **Distance Calculation**: The algorithm calculates the distance between the target point and all other points in the dataset. Common distance metrics include:
+   - Euclidean distance
+   - Manhattan distance
+   - Minkowski distance
+   - Cosine similarity
 
-* Soren-Dice's distance: 
-$$
-d_{Dice}(A, B) = 1 - \frac{2 |A \cap B|}{|A| + |B|}
-$$
-Jaccard's distance, with more emphasis on sets.
+2. **Neighbor Selection**: Once distances are calculated, the algorithm selects the \( k \) closest points (neighbors).
 
-## Grey scale images
+3. **Prediction**:
+   - For classification: The algorithm predicts the most common class among the \( k \) neighbors.
+   - For regression: The prediction is the average of the values of the \( k \) neighbors.
 
-- D22 distance:
-$$
-D_{22}(A, B) = \sqrt{\sum_{i,j} (A_{i,j} - B_{i,j})^2}
-$$
-Sensitive to small variations and to the distribution of pixel values.
-- D23 distance:
-$$
-D_{23}(A, B) = \left( \sum_{i,j} |A_{i,j} - B_{i,j}|^3 \right)^{\frac{1}{3}}
-$$To accentuate the impact of higher values.
+The choice of distance metric is crucial to the performance of k-NN, as it directly impacts which neighbors are selected.
 
+In image comparison tasks, like those described in this document, distance metrics (such as the **Hausdorff Distance** or **Hausdorff_sum Distance**) are often used to measure the similarity or difference between sets of features (points) in two images. This concept is analogous to how distances are used in k-NN to find neighbors, though in a broader and more complex context.
+
+---
+
+# 1. Hausdorff Distance
+
+The Hausdorff distance between two sets of points \( A \) and \( B \) is defined as:
+
+\[
+d_H(A, B) = \max \left( \max_{a \in A} \min_{b \in B} d(a, b), \max_{b \in B} \min_{a \in A} d(b, a) \right)
+\]
+
+This is calculated by the `hausdorff_distance` method in the code.
+
+---
+
+# 2. Hausdorff_sum Distance
+
+This version of the Hausdorff distance sums the minimal distances between points from both sets, in both directions:
+
+\[
+d_{H\_sum}(A, B) = \sum_{a \in A} \min_{b \in B} d(a, b) + \sum_{b \in B} \min_{a \in A} d(b, a)
+\]
+
+This corresponds to the `hausdorff_distance_sum` method.
+
+---
+
+# 3. Distance d22
+
+The \( d_{22} \) distance between two images is defined as the maximum of the \( d_6 \) distances calculated in both directions:
+
+\[
+d_{22}(A, B) = \max \left( d_6(A, B), d_6(B, A) \right)
+\]
+
+It is calculated by the `distance_d22` method.
+
+---
+
+# 4. Distance d23
+
+The \( d_{23} \) distance is defined as the average of the \( d_6 \) distances calculated in both directions:
+
+\[
+d_{23}(A, B) = \frac{d_6(A, B) + d_6(B, A)}{2}
+\]
+
+It is calculated by the `distance_d23` method.
+
+---
+
+# Note on the d6 Distance
+
+The \( d_6 \) distance is used as the base for both the \( d_{22} \) and \( d_{23} \) distances. It is calculated by taking the sum of the minimal distances between each point in one set to the other, normalized by the number of points:
+
+\[
+d_6(A, B) = \frac{\sum_{a \in A} \min_{b \in B} d(a, b)}{|A|}
+\]
