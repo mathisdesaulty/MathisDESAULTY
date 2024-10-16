@@ -23,9 +23,11 @@ In image comparison tasks, like those described in this document, distance metri
 
 # 1. Hausdorff Distance
 
-The Hausdorff distance between two sets of points `A` and `B` is defined as:
+The Hausdorff distance between two sets of points \( A \) and \( B \) is defined as:
 
-`d_H(A, B) = max( max_{a ∈ A} min_{b ∈ B} d(a, b), max_{b ∈ B} min_{a ∈ A} d(b, a) )`
+$$
+d_H(A, B) = \max \left( \max_{a \in A} \min_{b \in B} d(a, b), \max_{b \in B} \min_{a \in A} d(b, a) \right)
+$$
 
 This is calculated by the `hausdorff_distance` method in the code.
 
