@@ -23,11 +23,9 @@ In image comparison tasks, like those described in this document, distance metri
 
 # 1. Hausdorff Distance
 
-The Hausdorff distance between two sets of points \( A \) and \( B \) is defined as:
+The Hausdorff distance between two sets of points `A` and `B` is defined as:
 
-\[
-d_H(A, B) = \max \left( \max_{a \in A} \min_{b \in B} d(a, b), \max_{b \in B} \min_{a \in A} d(b, a) \right)
-\]
+`d_H(A, B) = max( max_{a ∈ A} min_{b ∈ B} d(a, b), max_{b ∈ B} min_{a ∈ A} d(b, a) )`
 
 This is calculated by the `hausdorff_distance` method in the code.
 
@@ -37,9 +35,7 @@ This is calculated by the `hausdorff_distance` method in the code.
 
 This version of the Hausdorff distance sums the minimal distances between points from both sets, in both directions:
 
-\[
-d_{H\_sum}(A, B) = \sum_{a \in A} \min_{b \in B} d(a, b) + \sum_{b \in B} \min_{a \in A} d(b, a)
-\]
+`d_{H_sum}(A, B) = ∑_{a ∈ A} min_{b ∈ B} d(a, b) + ∑_{b ∈ B} min_{a ∈ A} d(b, a)`
 
 This corresponds to the `hausdorff_distance_sum` method.
 
@@ -47,11 +43,9 @@ This corresponds to the `hausdorff_distance_sum` method.
 
 # 3. Distance d22
 
-The \( d_{22} \) distance between two images is defined as the maximum of the \( d_6 \) distances calculated in both directions:
+The `d_{22}` distance between two images is defined as the maximum of the `d_6` distances calculated in both directions:
 
-\[
-d_{22}(A, B) = \max \left( d_6(A, B), d_6(B, A) \right)
-\]
+`d_{22}(A, B) = max( d_6(A, B), d_6(B, A) )`
 
 It is calculated by the `distance_d22` method.
 
@@ -59,11 +53,9 @@ It is calculated by the `distance_d22` method.
 
 # 4. Distance d23
 
-The \( d_{23} \) distance is defined as the average of the \( d_6 \) distances calculated in both directions:
+The `d_{23}` distance is defined as the average of the `d_6` distances calculated in both directions:
 
-\[
-d_{23}(A, B) = \frac{d_6(A, B) + d_6(B, A)}{2}
-\]
+`d_{23}(A, B) = (d_6(A, B) + d_6(B, A)) / 2`
 
 It is calculated by the `distance_d23` method.
 
@@ -71,8 +63,7 @@ It is calculated by the `distance_d23` method.
 
 # Note on the d6 Distance
 
-The \( d_6 \) distance is used as the base for both the \( d_{22} \) and \( d_{23} \) distances. It is calculated by taking the sum of the minimal distances between each point in one set to the other, normalized by the number of points:
+The `d_6` distance is used as the base for both the `d_{22}` and `d_{23}` distances. It is calculated by taking the sum of the minimal distances between each point in one set to the other, normalized by the number of points:
 
-\[
-d_6(A, B) = \frac{\sum_{a \in A} \min_{b \in B} d(a, b)}{|A|}
-\]
+`d_6(A, B) = ( ∑_{a ∈ A} min_{b ∈ B} d(a, b) ) / |A|`
+
