@@ -19,7 +19,16 @@ This project allows you to use the MNIST dataset to predict images of numbers th
     ```bash
     python3 -m venv yenv
     ```
-4. Install the required dependencies:
+4. Activate the virtual envirronement:
+       Linux : 
+        ```bash
+        source yenv/bin/activate
+        ```
+       Windows:
+       ```bash
+        yenv\Scripts\activate
+        ```
+6. Install the required dependencies:
     ```bash
     pip install -r requirements.txt
     ```
