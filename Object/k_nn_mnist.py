@@ -4,6 +4,7 @@ K-Nearest Neighbors classifier using Hausdorff distance for MNIST dataset.
 
 from collections import Counter
 from sklearn.datasets import fetch_openml
+from sklearn.model_selection import train_test_split
 from Object.math_tool import MathTool
 from Object.image_user import ImageUser
 
@@ -226,26 +227,30 @@ class KNNClassifierMNIST:
         most_common = Counter(k_nearest_labels).most_common(1)
         return most_common[0][0]
 
-    def performance(self, num_tests=100, distance_metric='hausdorff'):
+
+    def performance(self, num_tests=10, distance_metric='hausdorff'):
         """
-        Tests the classifier on a subset of the dataset.
+        Tests the classifier on a subset of the dataset with a separate test set.
         :param num_tests: Number of tests to perform.
+        :param test_size: Proportion of data to use for testing (e.g., 0.2 for 20%).
         :param distance_metric: Distance metric to use ('hausdorff' or 'hausdorff_sum').
         :return: Success rate and a tuple of correct and total predictions.
         """
+        # Split the dataset into training and test sets
+        train_images, test_images, train_labels, test_labels = train_test_split(
+            self.images, self.labels, test_size=num_tests/len(self.images), random_state=42)
+
         correct_predictions = 0
-        total_predictions = min(num_tests, len(self.images))
+        total_predictions = min(num_tests, len(test_images))
 
         for i in range(total_predictions):
-            image = self.images[i]
-            label = self.labels[i]
-            # Exclude the current image from the training set
-            other_images = self.images[:i] + self.images[i + 1:]
-            other_labels = self.labels[:i] + self.labels[i + 1:]
+            image = test_images[i]
+            label = test_labels[i]
 
-            # Predict using the remaining images
+            # Predict using the training images (not including the test image)
             prediction = self._predict_with_custom_data(
-                image, other_images, other_labels, distance_metric)
+                image, train_images, train_labels, distance_metric)
+
             if prediction == label:
                 correct_predictions += 1
 

@@ -10,7 +10,8 @@ import threading
 import tkinter.ttk as ttk
 
 class DrawInterface:
-    """Interface for drawing and recognizing digits using KNN classifier."""    
+    """Interface for drawing and recognizing digits using KNN classifier."""
+    
     def __init__(self, root):
         """Initialize the drawing interface."""
         self.root = root
@@ -33,7 +34,7 @@ class DrawInterface:
         self.save_button = tk.Button(self.root, text="Predict number", command=self.save_image)
         self.save_button.grid(row=2, column=0, padx=10, pady=10, sticky="ew")
         
-        self.test_button = tk.Button(self.root, text="Run Performance Tests", command=self.run_performance_tests)
+        self.test_button = tk.Button(self.root, text="Run Performance Tests", command=self.open_performance_test_window)
         self.test_button.grid(row=2, column=1, padx=10, pady=10, sticky="ew")
         
         self.reset_button = tk.Button(self.root, text="Reset", command=self.reset_canvas)
@@ -45,6 +46,95 @@ class DrawInterface:
         
         # Initialize KNN classifier
         self.knn = KNNClassifierMNIST(k=5, size=10000)
+
+    def open_performance_test_window(self):
+        """Open a new window to set parameters for performance tests."""
+        test_window = tk.Toplevel(self.root)
+        test_window.title("Set Performance Test Parameters")
+
+        # Number of tests
+        tk.Label(test_window, text="Number of Tests:").grid(row=0, column=0, padx=5, pady=5)
+        tests_number_entry = tk.Entry(test_window)
+        tests_number_entry.grid(row=0, column=1, padx=5, pady=5)
+        tests_number_entry.insert(0, "10")
+
+        # Dataset size
+        tk.Label(test_window, text="Dataset Size:").grid(row=1, column=0, padx=5, pady=5)
+        size_entry = tk.Entry(test_window)
+        size_entry.grid(row=1, column=1, padx=5, pady=5)
+        size_entry.insert(0, "1000")
+
+        # k (number of neighbors)
+        tk.Label(test_window, text="k (Number of Neighbors):").grid(row=2, column=0, padx=5, pady=5)
+        k_entry = tk.Entry(test_window)
+        k_entry.grid(row=2, column=1, padx=5, pady=5)
+        k_entry.insert(0, "5")
+
+        # Run button
+        run_button = tk.Button(test_window, text="Run Tests", 
+                               command=lambda: self.run_performance_tests(tests_number_entry, size_entry, k_entry, test_window))
+        run_button.grid(row=3, column=0, columnspan=2, pady=10)
+
+    def run_performance_tests(self, tests_number_entry, size_entry, k_entry, test_window):
+        """Run performance tests based on user input."""
+        try:
+            tests_number = int(tests_number_entry.get())
+            size = int(size_entry.get())
+            k = int(k_entry.get())
+        except ValueError:
+            messagebox.showerror("Invalid Input", "Please enter valid numbers for the parameters.")
+            return
+
+        # Close the test window
+        test_window.destroy()
+        
+        # Create loading window
+        loading_window = tk.Toplevel(self.root)
+        loading_label = tk.Label(loading_window, text="Running performance tests... Please wait.")
+        loading_label.pack(pady=10)
+        
+        # Run the performance tests in a separate thread
+        def run_tests_in_thread():
+            # Initialize KNN classifier with the user-provided values
+            knn = KNNClassifierMNIST(k, size)
+
+            results = []
+
+            # Performance with default metric
+            start_time = time.time()
+            performance = knn.performance(tests_number)
+            end_time = time.time()
+            results.append(f"Default metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
+
+            # Performance with hausdorff_sum metric
+            start_time = time.time()
+            performance = knn.performance(tests_number, "hausdorff_sum")
+            end_time = time.time()
+            results.append(f"Hausdorff_sum metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
+
+            # Performance with d22 metric
+            start_time = time.time()
+            performance = knn.performance(tests_number, "d22")
+            end_time = time.time()
+            results.append(f"D22 metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
+
+            # Performance with d23 metric
+            start_time = time.time()
+            performance = knn.performance(tests_number, "d23")
+            end_time = time.time()
+            results.append(f"D23 metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
+
+            # Close the loading window and show results when done
+            def show_results():
+                loading_window.destroy()  # Close the loading window
+                messagebox.showinfo("Performance Results", "\n".join(results))
+
+            # Ensure the results are shown on the main thread
+            self.root.after(0, show_results)
+
+        # Run the tests in a separate thread to avoid blocking the GUI
+        threading.Thread(target=run_tests_in_thread).start()
+
 
     def save_image(self):
         """Save the drawn image, preprocess it, and predict using KNN classifier."""
@@ -69,9 +159,8 @@ class DrawInterface:
         
 
         self.predict_with_progress(binarized_image)
-    
-    
-    def predict_with_progress(self,binarized_image):
+
+    def predict_with_progress(self, binarized_image):
         """Predict the digit with a progress bar indication."""
         progress = ttk.Progressbar(self.root, orient="horizontal", length=200, mode="indeterminate", style="TProgressbar")
         style = ttk.Style(self.root)
@@ -81,22 +170,27 @@ class DrawInterface:
 
         def task():
             predictions = self.knn.predict_return_neighbors([binarized_image], "hausdorff_sum")
-            progress.stop()
-            progress.grid_forget()
             neighbors = predictions[0][1]
-            
-            fig, axes = plt.subplots(1, self.knn.k + 1, figsize=(10, self.knn.k + 1))
-            axes[0].imshow(binarized_image, cmap='gray')
-            axes[0].set_title("Your Image")
-            axes[0].axis('off')
 
-            for i, neighbor_idx in enumerate(neighbors):
-                neighbor_image = self.knn.images[neighbor_idx]
-                axes[i + 1].imshow(neighbor_image, cmap='gray')
-                axes[i + 1].set_title(f"Neighbor {i+1}")
-                axes[i + 1].axis('off')
-            messagebox.showinfo("Prediction", f"Predicted digit: {predictions[0][0]}")
-            plt.show()
+            def display_results():
+                progress.stop()
+                progress.grid_forget()
+
+                fig, axes = plt.subplots(1, self.knn.k + 1, figsize=(10, self.knn.k + 1))
+                axes[0].imshow(binarized_image, cmap='gray')
+                axes[0].set_title("Your Image")
+                axes[0].axis('off')
+
+                for i, neighbor_idx in enumerate(neighbors):
+                    neighbor_image = self.knn.images[neighbor_idx]
+                    axes[i + 1].imshow(neighbor_image, cmap='gray')
+                    axes[i + 1].set_title(f"Neighbor {i+1}")
+                    axes[i + 1].axis('off')
+
+                messagebox.showinfo("Prediction", f"Predicted digit: {predictions[0][0]}")
+                plt.show()
+
+            self.root.after(0, display_results)
 
         threading.Thread(target=task).start()
 
@@ -139,35 +233,3 @@ class DrawInterface:
         self.canvas.delete("all")
         self.old_x = None
         self.old_y = None
-
-    def run_performance_tests(self):
-        """Run performance tests and display the results."""
-        tests_number = 10
-        size = 1000
-        k = 5
-
-        knn = KNNClassifierMNIST(k, size)
-
-        results = []
-
-        # Performance with default metric
-        start_time = time.time()
-        performance = knn.performance(tests_number)
-        end_time = time.time()
-        results.append(f"Default metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
-        # Performance with hausdorff_sum metric
-        start_time = time.time()
-        performance = knn.performance(tests_number, "hausdorff_sum")
-        end_time = time.time()
-        results.append(f"Hausdorff_sum metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
-        # Performance with d22 metric
-        start_time = time.time()
-        performance = knn.performance(tests_number, "d22")
-        end_time = time.time()
-        results.append(f"D22 metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
-        # Performance with d23 metric
-        start_time = time.time()
-        performance = knn.performance(tests_number, "d23")
-        end_time = time.time()
-        results.append(f"D23 metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
-        messagebox.showinfo("Performance Results", "\n".join(results))
