@@ -32,6 +32,10 @@ This project allows you to use the MNIST dataset to predict images of numbers th
     ```bash
     pip install -r requirements.txt
     ```
+    If your on MacOs/Linux, install tkinter with:
+   ```bash
+    sudo apt-get install python3-tk
+    ```
 
 ## Usage
 
