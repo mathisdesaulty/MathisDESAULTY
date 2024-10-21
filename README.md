@@ -15,19 +15,6 @@ This project allows you to use the MNIST dataset to predict images of numbers th
     ```bash
     cd AlgoAndAILab_MathisDESAULTY
     ```
-3. Create a virtual envirronement:
-    ```bash
-    python3 -m venv yenv
-    ```
-4. Activate the virtual envirronement:
-       Linux : 
-        ```bash
-        source yenv/bin/activate
-        ```
-       Windows:
-       ```bash
-        yenv\Scripts\activate
-        ```
 5. Install the required dependencies:
     ```bash
     pip install -r requirements.txt
