@@ -9,11 +9,11 @@ This project allows you to use the MNIST dataset to predict images of numbers th
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/mathisdesaulty/AlgoAndAILab_MathisDESAULTY.git
+    git clone https://github.com/mathisdesaulty/MathisDESAULTY.git
     ```
 2. Navigate to the project directory:
     ```bash
-    cd AlgoAndAILab_MathisDESAULTY
+    cd MathisDESAULTY-main
     ```
 5. Install the required dependencies:
     ```bash
