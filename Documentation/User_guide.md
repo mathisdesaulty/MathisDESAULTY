@@ -61,10 +61,10 @@ Or with theses commands:
 
 
 ## Features
--**Image prediction**: (main.py and executable) allows you to draw your number and have it predicted by the MNIST dataset. This programme takes some time because it compares the image with a MNIST dataset of 10,000 images.
--**Performance test**: (main.py and executable) allows you to see the performance where you can choose: k, number of tests, number of images in the dataset used.
--**Terminal Performance test**: (performance.py) allows you to run performance tests in the terminal with k, the number of tests and the size of the dataset chosen at runtime.
--**K-NN class**: You can use this class for your own project, maximum optimisation has been done. If you want to use it, I leave you with the code [here](https://github.com/mathisdesaulty/MathisDESAULTY/blob/8b1f675fb66de66af5a47e26466f32d37e88b921/Object/k_nn_mnist.py#L10), all the docstrings are complete and allow you to understand the project.
+- **Image prediction**: (main.py and executable) allows you to draw your number and have it predicted by the MNIST dataset. This programme takes some time because it compares the image with a MNIST dataset of 10,000 images.
+- **Performance test**: (main.py and executable) allows you to see the performance where you can choose: k, number of tests, number of images in the dataset used.
+- **Terminal Performance test**: (performance.py) allows you to run performance tests in the terminal with k, the number of tests and the size of the dataset chosen at runtime.
+- **K-NN class**: You can use this class for your own project, maximum optimisation has been done. If you want to use it, I leave you with the code [here](https://github.com/mathisdesaulty/MathisDESAULTY/blob/8b1f675fb66de66af5a47e26466f32d37e88b921/Object/k_nn_mnist.py#L10), all the docstrings are complete and allow you to understand the project.
 
 ## Contact
 For further assistance, contact me at mathis.desaulty@gmail.com.
