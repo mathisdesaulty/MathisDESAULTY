@@ -45,7 +45,7 @@ class DrawInterface:
         self.old_y = None
         
         # Initialize KNN classifier
-        self.knn = KNNClassifierMNIST(k=5, size=10000)
+        self.knn = KNNClassifierMNIST(k=5, size=20000)
 
     def open_performance_test_window(self):
         """Open a new window to set parameters for performance tests."""
