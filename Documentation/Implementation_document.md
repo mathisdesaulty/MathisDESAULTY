@@ -2,14 +2,14 @@
 
 ## General structure of the program
 
-Le programme est composé de deux packages: Object et Tests. 
+The programme consists of two packages: Object et Tests. 
 
 ### Tests
 Tests lets you test all the classes we'll be talking about next. In this section, we have test classes produced with the unittest module, which makes it easy to run tests. For more information on tests, you can use the documentation [Testing](https://github.com/mathisdesaulty/MathisDESAULTY/blob/314fcff79ede4a74cac797ddd7f575dbe885dae6/Documentation/Testing.md#L1).
 
 ### Object
 
-Object is a package containing all the elements needed for the final algorithm to function correctly, which are in [main.py](https://github.com/mathisdesaulty/MathisDESAULTY/blob/314fcff79ede4a74cac797ddd7f575dbe885dae6/main.py#L5). Nous allons alors voir comment cela marche:
+Object is a package containing all the elements needed for the final algorithm to function correctly, which are in [main.py](https://github.com/mathisdesaulty/MathisDESAULTY/blob/314fcff79ede4a74cac797ddd7f575dbe885dae6/main.py#L5). Let's see how it works:
 
 - [KNNClassifierMNIST](https://github.com/mathisdesaulty/MathisDESAULTY/blob/314fcff79ede4a74cac797ddd7f575dbe885dae6/Object/k_nn_mnist.py#L10) is a class for using the K-NN algorithm on the MNIST dataset. It includes functions for predicting a single element, several elements, getting feedback on all predictions, the first prediction only, or predicting with a pre-parameterised dataset. To function, this class needs two other classes:
     - [ImageUser](https://github.com/mathisdesaulty/MathisDESAULTY/blob/314fcff79ede4a74cac797ddd7f575dbe885dae6/Object/image_user.py#L10) is a class for taking images and binarising them so that they can be used in the K-NN algorithm. It has only one function, allowing images to be binarised according to the treshold given to it.
