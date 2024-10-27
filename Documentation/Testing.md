@@ -89,11 +89,10 @@ All tests are of the form: test_[name of the document tested].py
 
 ## The presentation of the empirical testing results 
 
-Les tests de performances ont surtout été fait pour comparer les différentes façon de faire la distance entre 2 images, on en compte 4: 
-
+The performance tests were mainly carried out to compare the different ways of measuring the distance between 2 images, of which there are 4: 
 - [hausdorff_distance(image1, image2, neighbors_offset)](https://github.com/mathisdesaulty/MathisDESAULTY/blob/26b980f816e4efc3112cbd38b05f855895a09a7c/Object/math_tool.py#L90)
 - [hausdorff_distance_sum(image1, image2, neighbors_offset)](https://github.com/mathisdesaulty/MathisDESAULTY/blob/26b980f816e4efc3112cbd38b05f855895a09a7c/Object/math_tool.py#L155)
 - [distance_d22(image1, image2, neighbors_offset)](https://github.com/mathisdesaulty/MathisDESAULTY/blob/26b980f816e4efc3112cbd38b05f855895a09a7c/Object/math_tool.py#L210)
 - [distance_d23(image1, image2, neighbors_offset)](https://github.com/mathisdesaulty/MathisDESAULTY/blob/26b980f816e4efc3112cbd38b05f855895a09a7c/Object/math_tool.py#L228)
 
-Ces tests sont possibles à faire vous même en lançant main.py. 
+You can run these tests yourself by launching main.py. 
