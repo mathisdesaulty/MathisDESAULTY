@@ -238,7 +238,7 @@ class KNNClassifierMNIST:
         """
         # Split the dataset into training and test sets
         train_images, test_images, train_labels, test_labels = train_test_split(
-            self.images, self.labels, test_size=num_tests/len(self.images), random_state=None)
+            self.images, self.labels, test_size=num_tests/len(self.images), random_state=42)
 
         print("Test labels:", test_labels)
         correct_predictions = 0
