@@ -124,11 +124,14 @@ if __name__ == '__main__':
     unittest.main()
 
 
-# ### For DrawInterface: [TestDrawInterface](https://github.com/mathisdesaulty/MathisDESAULTY/blob/26b980f816e4efc3112cbd38b05f855895a09a7c/Tests/test_draw_interface.py#L26) 
+# ### For DrawInterface: 
+# [TestDrawInterface](https://github.com/mathisdesaulty/MathisDESAULTY/blob/26b980f816e4efc3112cbd38b05f855895a09a7c/Tests/test_draw_interface.py#L26)
 # - What was tested: How the user interface works.
 # How it was tested:
-#     - TestDrawInterface ensures that all GUI-related functions execute correctly and that visual elements are displayed as expected.
-#     - These are manual tests, as the interface elements must be visually checked by an operator while they are being executed.
+#     - TestDrawInterface ensures that all 
+#       GUI-related functions execute correctly and that visual elements are displayed as expected.
+#     - These are manual tests, as the interface 
+#       elements must be visually checked by an operator while they are being executed.
 # - Types of tests:
 #     - Functional testing
 #     - User interface testing

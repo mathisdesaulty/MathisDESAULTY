@@ -1,49 +1,52 @@
+"""Module for drawing and recognizing digits using KNN classifier."""
+
+import time
+import threading
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 from PIL import Image, ImageOps, ImageGrab
 import numpy as np
 import matplotlib.pyplot as plt
 from Object.k_nn_mnist import KNNClassifierMNIST
 from Object.image_user import ImageUser
-import time
-import threading
-import tkinter.ttk as ttk
+
 
 class DrawInterface:
     """Interface for drawing and recognizing digits using KNN classifier."""
-    
+
     def __init__(self, root):
         """Initialize the drawing interface."""
         self.root = root
         self.root.title("Drawing Interface")
-        
+
         # Configure grid layout
         self.root.grid_rowconfigure(0, weight=1)
         self.root.grid_columnconfigure(0, weight=1)
-        
+
         # Create label
         self.label = tk.Label(self.root, text="Write your number to predict!")
         self.label.grid(row=0, column=0, padx=10, pady=10, columnspan=3)
-        
+
         # Create canvas for drawing
         self.canvas = tk.Canvas(self.root, bg="white", width=500, height=500)
         self.canvas.grid(row=1, column=0, padx=10, pady=10, columnspan=3)
         self.canvas.bind("<B1-Motion>", self.paint)
-        
+
         # Create buttons
         self.save_button = tk.Button(self.root, text="Predict number", command=self.save_image)
         self.save_button.grid(row=2, column=0, padx=10, pady=10, sticky="ew")
-        
-        self.test_button = tk.Button(self.root, text="Run Performance Tests", command=self.open_performance_test_window)
+
+        self.test_button = tk.Button(self.root, text="Run Performance Tests",
+                                     command=self.open_performance_test_window)
         self.test_button.grid(row=2, column=1, padx=10, pady=10, sticky="ew")
-        
+
         self.reset_button = tk.Button(self.root, text="Reset", command=self.reset_canvas)
         self.reset_button.grid(row=2, column=2, padx=10, pady=10, sticky="ew")
-        
+
         # Initialize drawing variables
         self.old_x = None
         self.old_y = None
-        
+
         # Initialize KNN classifier
         self.knn = KNNClassifierMNIST(k=5, size=10000)
 
@@ -71,8 +74,10 @@ class DrawInterface:
         k_entry.insert(0, "5")
 
         # Run button
-        run_button = tk.Button(test_window, text="Run Tests", 
-                               command=lambda: self.run_performance_tests(tests_number_entry, size_entry, k_entry, test_window))
+        run_button = tk.Button(test_window, text="Run Tests",
+                               command=lambda: self.run_performance_tests(tests_number_entry,
+                                                                          size_entry,
+                                                                          k_entry, test_window))
         run_button.grid(row=3, column=0, columnspan=2, pady=10)
 
     def run_performance_tests(self, tests_number_entry, size_entry, k_entry, test_window):
@@ -87,12 +92,12 @@ class DrawInterface:
 
         # Close the test window
         test_window.destroy()
-        
+
         # Create loading window
         loading_window = tk.Toplevel(self.root)
         loading_label = tk.Label(loading_window, text="Running performance tests... Please wait.")
         loading_label.pack(pady=10)
-        
+
         # Run the performance tests in a separate thread
         def run_tests_in_thread():
             # Initialize KNN classifier with the user-provided values
@@ -104,25 +109,31 @@ class DrawInterface:
             start_time = time.time()
             performance = knn.performance(tests_number)
             end_time = time.time()
-            results.append(f"Default metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
+            results.append(
+                f"Default metric: Performance: {performance[0]}, Ratio: {performance[1]}, "
+                           f"Time: {end_time - start_time} seconds")
 
             # Performance with hausdorff_sum metric
             start_time = time.time()
             performance = knn.performance(tests_number, "hausdorff_sum")
             end_time = time.time()
-            results.append(f"Hausdorff_sum metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
+            results.append(
+                f"Hausdorff_sum metric: Performance: {performance[0]}, Ratio: {performance[1]}, "
+                           f"Time: {end_time - start_time} seconds")
 
             # Performance with d22 metric
             start_time = time.time()
             performance = knn.performance(tests_number, "d22")
             end_time = time.time()
-            results.append(f"D22 metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
+            results.append(f"D22 metric: Performance: {performance[0]}, Ratio: {performance[1]}, "
+                           f"Time: {end_time - start_time} seconds")
 
             # Performance with d23 metric
             start_time = time.time()
             performance = knn.performance(tests_number, "d23")
             end_time = time.time()
-            results.append(f"D23 metric: Performance: {performance[0]}, Ratio: {performance[1]}, Time: {end_time - start_time} seconds")
+            results.append(f"D23 metric: Performance: {performance[0]}, Ratio: {performance[1]}, "
+                           f"Time: {end_time - start_time} seconds")
 
             # Close the loading window and show results when done
             def show_results():
@@ -134,7 +145,6 @@ class DrawInterface:
 
         # Run the tests in a separate thread to avoid blocking the GUI
         threading.Thread(target=run_tests_in_thread).start()
-
 
     def save_image(self):
         """Save the drawn image, preprocess it, and predict using KNN classifier."""
@@ -156,13 +166,13 @@ class DrawInterface:
 
         binarized_image = np.array(pixel_matrix, dtype=np.uint8)
         binarized_image = ImageUser.binarize_image(binarized_image, threshold=40)
-        
 
         self.predict_with_progress(binarized_image)
 
     def predict_with_progress(self, binarized_image):
         """Predict the digit with a progress bar indication."""
-        progress = ttk.Progressbar(self.root, orient="horizontal", length=200, mode="indeterminate", style="TProgressbar")
+        progress = ttk.Progressbar(self.root, orient="horizontal", length=200,
+                                   mode="indeterminate", style="TProgressbar")
         style = ttk.Style(self.root)
         style.configure("TProgressbar", troughcolor='white', background='blue')
         progress.grid(row=3, column=0, columnspan=3, pady=10)
